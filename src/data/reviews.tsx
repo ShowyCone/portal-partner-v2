@@ -1,4 +1,14 @@
-const reviewsData = [
+interface Review {
+  id: string;
+  userId: string;
+  reviewer: string;
+  serviceId: string;
+  serviceName: string;
+  rating: number;
+  text: string;
+}
+
+const reviewsData: Review[] = [
   {
     id: 'e8f4c39b-2b8e-4f53-8f61-8dbf5c6e4671',
     userId: 'u101',
@@ -69,8 +79,8 @@ const reviewsData = [
     serviceId: 'd1b4752a-8f57-4f38-8568-f4b5c6783372',
     serviceName: 'DeFi Treasury Management',
     rating: 4.9,
-    text: 'Their yield strategies increased our APY by 20 % while minimizing risk.',
+    text: 'Their yield strategies increased our APY by 20% while minimizing risk.',
   },
-]
+];
 
-export default reviewsData
+export default reviewsData;

@@ -1,18 +1,33 @@
 import React from 'react'
 import { FaHome } from 'react-icons/fa'
-import { useParams } from 'react-router'
-import partnersData from '../data/partners'
+import { useRouter } from 'next/router'
+import partnersData from '../../data/partners'
 import PartnerProfile from './PartnerProfile'
-import servicesData from '../data/services'
-import ServiceSlider from '../components/ServiceSlider'
-import ReviewsSection from '../components/ReviewsSection'
+import servicesData from '../../data/services'
+import ServiceSlider from '../../components/ServiceSlider'
+import ReviewsSection from '../../components/ReviewsSection'
+
+interface Partner {
+  id: string
+  name: string
+  // Add other partner properties here
+}
+
+interface Service {
+  id: string
+  partnerId: string
+  tag: string
+  // Add other service properties here
+}
 
 const PartnerDashboard = () => {
-  const { id } = useParams()
-  const partner = partnersData.find((p) => p.id === id)
+  const router = useRouter()
+  const { id } = router.query as { id: string }
+  const partner = partnersData.find((p: Partner) => p.id === id)
+  
   // Filter partner services and obtain up to three unique tags
-  const partnerServices = servicesData.filter((s) => s.partnerId === id)
-  const uniqueTags = [...new Set(partnerServices.map((s) => s.tag))].slice(0, 3)
+  const partnerServices = servicesData.filter((s: Service) => s.partnerId === id)
+  const uniqueTags = [...new Set(partnerServices.map((s: Service) => s.tag))].slice(0, 3)
 
   if (!partner) {
     return (
@@ -34,7 +49,7 @@ const PartnerDashboard = () => {
       <PartnerProfile partner={partner} />
       {/* Service sliders by tag */}
       {uniqueTags.map((tag) => {
-        const tagServices = partnerServices.filter((s) => s.tag === tag)
+        const tagServices = partnerServices.filter((s: Service) => s.tag === tag)
         return (
           <ServiceSlider
             key={tag}

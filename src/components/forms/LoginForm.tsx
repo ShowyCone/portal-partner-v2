@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import { useState, FormEvent } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router'
+import Link from 'next/link'
 import { FiMail, FiLock } from 'react-icons/fi'
 
-const slideIn = (direction = 'left') => ({
+const slideIn = (direction: 'left' | 'right' = 'left') => ({
   hidden: {
     opacity: 0,
     x: direction === 'left' ? -50 : 50,
@@ -18,14 +18,19 @@ const slideIn = (direction = 'left') => ({
   },
 })
 
+interface LoginFormProps {
+  showApplyNotice?: boolean
+  onSuccess?: () => void
+}
+
 export default function LoginForm({
   showApplyNotice = false,
   onSuccess = () => {},
-}) {
+}: LoginFormProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
     const randomMiddle = Math.random()
@@ -34,10 +39,11 @@ export default function LoginForm({
       .toUpperCase()
     const addressNumber = `0xd123${randomMiddle}23FG2`
 
-    localStorage.setItem('isAuthenticated', 'true')
-    localStorage.setItem('addressNumber', addressNumber)
-
-    window.dispatchEvent(new Event('login'))
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isAuthenticated', 'true')
+      localStorage.setItem('addressNumber', addressNumber)
+      window.dispatchEvent(new Event('login'))
+    }
 
     onSuccess()
   }
@@ -109,7 +115,7 @@ export default function LoginForm({
             </span>
           </div>
           <div className='text-right mt-1'>
-            <Link className='text-sm text-rwa underline'>Forgot Password?</Link>
+            <Link href="#" className='text-sm text-rwa underline'>Forgot Password?</Link>
           </div>
         </div>
 
@@ -127,7 +133,7 @@ export default function LoginForm({
         </div>
 
         <Link
-          to=''
+          href="#"
           className='w-full py-3 border-2 border-rwa text-rwa font-semibold rounded text-center hover:bg-rwa hover:text-white transition-colors cursor-pointer'
         >
           Signup Now
@@ -140,7 +146,7 @@ export default function LoginForm({
         ) : (
           <p className='text-center text-sm text-gray-600'>
             Are you a partner?{' '}
-            <Link to='/apply' className='text-rwa underline'>
+            <Link href='/apply' className='text-rwa underline'>
               Login as provider.
             </Link>
           </p>

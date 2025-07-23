@@ -1,12 +1,8 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef, FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import { FaCloudUploadAlt, FaTimes, FaCheck } from 'react-icons/fa'
 import { AiOutlineCheck } from 'react-icons/ai'
-import { useNavigate } from 'react-router'
-
-import Stepper from '../../components/steper/Stepper'
-import StepWrapper from '../../components/steper/StepWrapper'
-import Success from '../../components/Success'
+import { useRouter } from 'next/router'
 
 const CATEGORIES = [
   'Smart Contract Dev',
@@ -17,7 +13,28 @@ const CATEGORIES = [
   'Tokenomics Design',
 ]
 
-const PRICE_PLANS = ['Basic', 'Standard', 'Pro']
+const PRICE_PLANS = ['Basic', 'Standard', 'Pro'] as const
+
+type PricePlan = typeof PRICE_PLANS[number]
+
+interface FormState {
+  title: string
+  category: string
+  description: string
+  tags: string[]
+  priceType: 'fixed' | 'plans'
+  fixedSale: string
+  fixedPartner: string
+  plans: Record<PricePlan, {
+    enabled: boolean
+    sale: string
+    partner: string
+  }>
+  contentFixed: string
+  contentPlans: Record<PricePlan, string>
+  faqEnabled: boolean
+  faqs: Array<{ q: string; a: string }>
+}
 
 const fadeVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -29,14 +46,12 @@ const Separator = () => <div className='w-full h-px bg-gray-200' />
 export default function CreateServiceForm() {
   const [companyName] = useState('Your Company')
   const [step, setStep] = useState(0)
-  const [thumbnail, setThumbnail] = useState(null)
-  const [form, setForm] = useState({
+  const [thumbnail, setThumbnail] = useState<File | null>(null)
+  const [form, setForm] = useState<FormState>({
     title: '',
     category: '',
-
     description: '',
     tags: [],
-
     priceType: 'fixed',
     fixedSale: '',
     fixedPartner: '',
@@ -45,44 +60,44 @@ export default function CreateServiceForm() {
       Standard: { enabled: false, sale: '', partner: '' },
       Pro: { enabled: false, sale: '', partner: '' },
     },
-
     contentFixed: '',
     contentPlans: { Basic: '', Standard: '', Pro: '' },
     faqEnabled: false,
     faqs: [],
   })
 
-  const tagInputRef = useRef(null)
-  const navigate = useNavigate()
+  const tagInputRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   const totalSteps = 6
   const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps))
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 0))
 
-  const isStepValid = () => {
+  const isStepValid = (): boolean => {
     switch (step) {
       case 1:
-        return form.title.trim() && form.category
+        return form.title.trim() !== '' && form.category !== ''
       case 2:
-        return form.description.trim() && form.tags.length
+        return form.description.trim() !== '' && form.tags.length > 0
       case 3:
-        if (form.priceType === 'fixed')
+        if (form.priceType === 'fixed') {
           return (
-            form.fixedSale &&
-            form.fixedPartner &&
+            form.fixedSale !== '' &&
+            form.fixedPartner !== '' &&
             Number(form.fixedPartner) < Number(form.fixedSale)
           )
+        }
         return PRICE_PLANS.some(
           (p) =>
             form.plans[p].enabled &&
-            form.plans[p].sale &&
-            form.plans[p].partner &&
+            form.plans[p].sale !== '' &&
+            form.plans[p].partner !== '' &&
             Number(form.plans[p].partner) < Number(form.plans[p].sale)
         )
       case 4:
-        if (form.priceType === 'fixed') return form.contentFixed.trim()
+        if (form.priceType === 'fixed') return form.contentFixed.trim() !== ''
         return PRICE_PLANS.every(
-          (p) => !form.plans[p].enabled || form.contentPlans[p].trim()
+          (p) => !form.plans[p].enabled || form.contentPlans[p].trim() !== ''
         )
       case 5:
         return !!thumbnail
@@ -91,137 +106,80 @@ export default function CreateServiceForm() {
     }
   }
 
-  const handleChange = (e) =>
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }))
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
 
-  const handlePlanToggle = (plan) =>
-    setForm((p) => ({
-      ...p,
+  const handlePlanToggle = (plan: PricePlan) => {
+    setForm((prev) => ({
+      ...prev,
       plans: {
-        ...p.plans,
-        [plan]: { ...p.plans[plan], enabled: !p.plans[plan].enabled },
+        ...prev.plans,
+        [plan]: { ...prev.plans[plan], enabled: !prev.plans[plan].enabled },
       },
     }))
+  }
 
-  const handlePlanField = (plan, field, value) =>
-    setForm((p) => ({
-      ...p,
+  const handlePlanField = (plan: PricePlan, field: 'sale' | 'partner', value: string) => {
+    setForm((prev) => ({
+      ...prev,
       plans: {
-        ...p.plans,
-        [plan]: { ...p.plans[plan], [field]: value },
+        ...prev.plans,
+        [plan]: { ...prev.plans[plan], [field]: value },
       },
     }))
+  }
 
-  const addTag = (value) => {
+  const addTag = (value: string) => {
     const tag = value.trim()
     if (tag && !form.tags.includes(tag) && form.tags.length < 6) {
-      setForm((p) => ({ ...p, tags: [...p.tags, tag] }))
+      setForm((prev) => ({ ...prev, tags: [...prev.tags, tag] }))
     }
   }
 
-  const handleTagKeyDown = (e) => {
+  const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (['Enter', ' '].includes(e.key)) {
       e.preventDefault()
-      addTag(e.target.value)
-      e.target.value = ''
+      if (e.currentTarget.value) {
+        addTag(e.currentTarget.value)
+        e.currentTarget.value = ''
+      }
     }
   }
 
-  const removeTag = (t) =>
-    setForm((p) => ({ ...p, tags: p.tags.filter((tag) => tag !== t) }))
+  const removeTag = (tagToRemove: string) => {
+    setForm((prev) => ({ ...prev, tags: prev.tags.filter((tag) => tag !== tagToRemove) }))
+  }
 
-  const addFaq = () =>
-    setForm((p) => ({
-      ...p,
-      faqs: [...p.faqs, { q: '', a: '' }].slice(0, 6),
+  const addFaq = () => {
+    setForm((prev) => ({
+      ...prev,
+      faqs: [...prev.faqs, { q: '', a: '' }].slice(0, 6),
     }))
+  }
 
-  const updateFaq = (idx, field, value) =>
-    setForm((p) => ({
-      ...p,
-      faqs: p.faqs.map((f, i) => (i === idx ? { ...f, [field]: value } : f)),
+  const updateFaq = (idx: number, field: 'q' | 'a', value: string) => {
+    setForm((prev) => ({
+      ...prev,
+      faqs: prev.faqs.map((f, i) => (i === idx ? { ...f, [field]: value } : f)),
     }))
+  }
 
-  const removeFaq = (idx) =>
-    setForm((p) => ({ ...p, faqs: p.faqs.filter((_, i) => i !== idx) }))
+  const removeFaq = (idx: number) => {
+    setForm((prev) => ({ ...prev, faqs: prev.faqs.filter((_, i) => i !== idx) }))
+  }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     // API call
     nextStep()
   }
 
-  return (
-    <section className='flex items-center justify-center min-h-screen py-15 relative'>
-      <div className='absolute top-10 right-60 w-45 h-45 bg-rwa rounded-full' />
-      <div className='absolute bottom-30 left-65 w-35 h-35 bg-rwa rounded-full' />
-      <motion.form
-        onSubmit={handleSubmit}
-        variants={fadeVariants}
-        initial='hidden'
-        animate='visible'
-        className='w-full max-w-3xl min-h-[450px] bg-white/30 backdrop-blur-lg shadow-xl rounded-2xl flex flex-col border-b-rwa border-r-rwa border border-t-rwa/50 border-l-rwa/50'
-      >
-        {step > 0 && step < 6 && (
-          <div className='px-10 py-5'>
-            <Stepper currentStep={step} totalSteps={totalSteps} />
-          </div>
-        )}
-
-        <div className='flex-grow flex flex-col'>{renderStepContent()}</div>
-
-        {step < 6 && (
-          <div className='flex justify-between px-10 pb-5'>
-            {step > 0 ? (
-              <button
-                type='button'
-                onClick={prevStep}
-                className='px-6 py-2 border border-rwa text-rwa rounded-2xl hover:bg-rwa/10 transition'
-              >
-                Go Back
-              </button>
-            ) : (
-              <span />
-            )}
-            {step > 0 && step < 5 ? (
-              <button
-                type='button'
-                onClick={nextStep}
-                disabled={!isStepValid()}
-                className={`px-6 py-2 rounded-2xl text-white transition ${
-                  isStepValid()
-                    ? 'bg-rwa hover:opacity-90'
-                    : 'bg-gray-300 cursor-not-allowed'
-                }`}
-              >
-                Next
-              </button>
-            ) : step === 5 ? (
-              <button
-                type='submit'
-                disabled={!isStepValid()}
-                className={`px-6 py-2 rounded-2xl text-white ${
-                  isStepValid()
-                    ? 'bg-rwa hover:opacity-90'
-                    : 'bg-gray-300 cursor-not-allowed'
-                }`}
-              >
-                Submit Service
-              </button>
-            ) : (
-              <span />
-            )}
-          </div>
-        )}
-      </motion.form>
-    </section>
-  )
-
-  function renderStepContent() {
+  const renderStepContent = () => {
     switch (step) {
       case 0:
         return (
-          <div className='flex-1 flex flex-col justify-between h-full '>
+          <div className='flex-1 flex flex-col justify-between h-full'>
             <div className='flex flex-col gap-4 px-10 py-5'>
               <p className='text-sm font-medium'>
                 You will submit your request as{' '}
@@ -374,7 +332,7 @@ export default function CreateServiceForm() {
               </div>
 
               <div className='flex gap-4 mt-4'>
-                {['fixed', 'plans'].map((type) => (
+                {(['fixed', 'plans'] as const).map((type) => (
                   <label
                     key={type}
                     className='flex items-center gap-2 cursor-pointer'
@@ -579,11 +537,11 @@ export default function CreateServiceForm() {
                       <input
                         type='radio'
                         name='faqEnabled'
-                        value={opt === 'Yes'}
+                        value={opt === 'Yes' ? 'true' : 'false'}
                         checked={form.faqEnabled === (opt === 'Yes')}
                         onChange={(e) =>
-                          setForm((p) => ({
-                            ...p,
+                          setForm((prev) => ({
+                            ...prev,
                             faqEnabled: e.target.value === 'true',
                             faqs: [],
                           }))
@@ -676,7 +634,7 @@ export default function CreateServiceForm() {
                     type='file'
                     accept='image/*,video/mp4,application/pdf'
                     className='hidden'
-                    onChange={(e) => setThumbnail(e.target.files[0])}
+                    onChange={(e) => e.target.files && setThumbnail(e.target.files[0])}
                   />
                   {thumbnail && (
                     <span className='text-xs text-green-600 mt-2'>
@@ -696,7 +654,7 @@ export default function CreateServiceForm() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-              className='backdrop-blur-sm  flex items-center justify-center w-20 h-20 mx-auto rounded-full bg-rwa z-10 border border-r-rwa/30 border-b-rwa/30 border-gray-400 shadow-[0_3px_10px_rgb(0,0,100,0.2)]'
+              className='backdrop-blur-sm flex items-center justify-center w-20 h-20 mx-auto rounded-full bg-rwa z-10 border border-r-rwa/30 border-b-rwa/30 border-gray-400 shadow-[0_3px_10px_rgb(0,0,100,0.2)]'
             >
               <AiOutlineCheck className='text-white' size={48} />
             </motion.div>
@@ -711,7 +669,7 @@ export default function CreateServiceForm() {
             </p>
             <button
               type='button'
-              onClick={() => navigate('/dashboard')}
+              onClick={() => router.push('/dashboard')}
               className='mt-4 px-6 py-1.5 rounded-2xl bg-rwa text-white font-medium hover:opacity-90 transition'
             >
               Go to dashboard
@@ -723,4 +681,88 @@ export default function CreateServiceForm() {
         return null
     }
   }
+
+  return (
+    <section className='flex items-center justify-center min-h-screen py-15 relative'>
+      <div className='absolute top-10 right-60 w-45 h-45 bg-rwa rounded-full' />
+      <div className='absolute bottom-30 left-65 w-35 h-35 bg-rwa rounded-full' />
+      <motion.form
+        onSubmit={handleSubmit}
+        variants={fadeVariants}
+        initial='hidden'
+        animate='visible'
+        className='w-full max-w-3xl min-h-[450px] bg-white/30 backdrop-blur-lg shadow-xl rounded-2xl flex flex-col border-b-rwa border-r-rwa border border-t-rwa/50 border-l-rwa/50'
+      >
+        {step > 0 && step < 6 && (
+          <div className='px-10 py-5'>
+            {/* Stepper component would need to be implemented or imported */}
+            <div className='flex items-center justify-between'>
+              {Array.from({ length: totalSteps }).map((_, i) => (
+                <div key={i} className='flex items-center'>
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      i <= step ? 'bg-rwa text-white' : 'bg-gray-200'
+                    }`}
+                  >
+                    {i + 1}
+                  </div>
+                  {i < totalSteps - 1 && (
+                    <div
+                      className={`w-16 h-1 ${i < step ? 'bg-rwa' : 'bg-gray-200'}`}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className='flex-grow flex flex-col'>{renderStepContent()}</div>
+
+        {step < 6 && (
+          <div className='flex justify-between px-10 pb-5'>
+            {step > 0 ? (
+              <button
+                type='button'
+                onClick={prevStep}
+                className='px-6 py-2 border border-rwa text-rwa rounded-2xl hover:bg-rwa/10 transition'
+              >
+                Go Back
+              </button>
+            ) : (
+              <span />
+            )}
+            {step > 0 && step < 5 ? (
+              <button
+                type='button'
+                onClick={nextStep}
+                disabled={!isStepValid()}
+                className={`px-6 py-2 rounded-2xl text-white transition ${
+                  isStepValid()
+                    ? 'bg-rwa hover:opacity-90'
+                    : 'bg-gray-300 cursor-not-allowed'
+                }`}
+              >
+                Next
+              </button>
+            ) : step === 5 ? (
+              <button
+                type='submit'
+                disabled={!isStepValid()}
+                className={`px-6 py-2 rounded-2xl text-white ${
+                  isStepValid()
+                    ? 'bg-rwa hover:opacity-90'
+                    : 'bg-gray-300 cursor-not-allowed'
+                }`}
+              >
+                Submit Service
+              </button>
+            ) : (
+              <span />
+            )}
+          </div>
+        )}
+      </motion.form>
+    </section>
+  )
 }

@@ -1,8 +1,30 @@
-import React, { useRef } from 'react'
+import { useRef, ChangeEvent } from 'react'
 import StepWrapper from '../steper/StepWrapper'
 import { partnerTags } from '../../data/partnerTags'
 import { termsOfService } from '../../data/termsOfService'
 import { RiUploadCloudLine } from 'react-icons/ri'
+
+interface FormData {
+  companyName?: string
+  companyWebsite?: string
+  companyDescription?: string
+  businessEmail?: string
+  phoneNumber?: string
+  referral?: string
+}
+
+interface ProviderFormStepsProps {
+  currentStep: number
+  formData: FormData
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>
+  file: File | null
+  setFile: (file: File | null) => void
+  selectedTags: string[]
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>
+  lastUpdated: string
+  onNext: () => void
+  onBack: () => void
+}
 
 export default function ProviderFormSteps({
   currentStep,
@@ -15,17 +37,23 @@ export default function ProviderFormSteps({
   lastUpdated,
   onNext,
   onBack,
-}) {
-  const scrollRef = useRef(null)
+}: ProviderFormStepsProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const toggleTag = (tag) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0])
+    }
+  }
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
     )
   }
 
@@ -86,7 +114,7 @@ export default function ProviderFormSteps({
               id='companyDescription'
               name='companyDescription'
               placeholder='Tell us about your company'
-              rows='4'
+              rows={4}
               className={inputClasses}
               value={formData.companyDescription || ''}
               onChange={handleChange}
@@ -181,7 +209,7 @@ export default function ProviderFormSteps({
               type='file'
               accept='image/*,video/mp4,application/pdf'
               className='hidden'
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={handleFileChange}
             />
             {file && (
               <span className='mt-2 text-xs text-green-600'>{file.name}</span>

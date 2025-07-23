@@ -1,10 +1,16 @@
 import React from 'react'
 
-export default function Stepper({
+interface StepperProps {
+  currentStep?: number
+  totalSteps?: number
+  stepLabels?: string[]
+}
+
+const Stepper: React.FC<StepperProps> = ({
   currentStep = 0,
   totalSteps = 1,
   stepLabels = [],
-}) {
+}) => {
   return (
     <div className='w-full flex flex-col items-center'>
       <div className='flex items-center w-full'>
@@ -35,3 +41,5 @@ export default function Stepper({
     </div>
   )
 }
+
+export default Stepper

@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import LoginForm from '../../components/forms/LoginForm'
-import Stepper from '../../components/steper/Stepper'
-import ProviderFormSteps from '../../components/forms/ProviderFormSteps'
-import Success from '../../components/Success'
-import { useNavigate } from 'react-router'
+import LoginForm from '../forms/LoginForm'
+import Stepper from '../steper/Stepper'
+import ProviderFormSteps from '../forms/ProviderFormSteps'
+import Success from '../Success'
+import { useRouter } from 'next/router'
 
-function LogoSliderRow({ reverse = false }) {
+interface LogoSliderRowProps {
+  reverse?: boolean
+}
+
+function LogoSliderRow({ reverse = false }: LogoSliderRowProps) {
   const visibleLogos = Array.from({ length: 4 }).map(() => '/logoipsum.svg')
   const logos = [...visibleLogos, ...visibleLogos]
 
@@ -44,11 +48,11 @@ export default function Apply() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
   const totalSteps = 4
-  const [formData, setFormData] = useState({})
-  const [file, setFile] = useState(null)
-  const [selectedTags, setSelectedTags] = useState([])
+  const [formData, setFormData] = useState<Record<string, any>>({})
+  const [file, setFile] = useState<File | null>(null)
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [showSuccess, setShowSuccess] = useState(false)
-  const navigate = useNavigate()
+  const router = useRouter()
   const lastUpdated = '16/06/2025'
 
   const handleLoginSuccess = () => {
@@ -93,7 +97,7 @@ export default function Apply() {
           <LoginForm showApplyNotice onSuccess={handleLoginSuccess} />
         ) : showSuccess ? (
           <div className='flex items-center justify-center h-full'>
-            <Success show={true} onClose={() => navigate('/')} />
+            <Success show={true} onClose={() => router.push('/')} />
             <div className='absolute top-6 right-2 w-25 h-25 bg-rwa rounded-full' />
             <div className='absolute top-18 left-20 w-10 h-10 bg-rwa rounded-full' />
             <div className='absolute bottom-8 left-2 w-25 h-25 bg-rwa rounded-full' />

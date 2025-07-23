@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { ReactNode } from 'react'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 15 },
@@ -9,7 +10,12 @@ const fadeIn = {
   },
 }
 
-export default function AuthBox({ children, footerText = '' }) {
+interface AuthBoxProps {
+  children: ReactNode
+  footerText?: string
+}
+
+export default function AuthBox({ children, footerText = '' }: AuthBoxProps) {
   return (
     <motion.div
       variants={fadeIn}

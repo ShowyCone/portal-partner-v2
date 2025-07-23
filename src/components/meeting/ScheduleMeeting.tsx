@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   FiUser,
   FiMail,
@@ -6,36 +6,83 @@ import {
   FiTerminal,
   FiMonitor,
   FiSettings,
-} from 'react-icons/fi'
-import { HiOutlineBuildingOffice2, HiOutlineMegaphone } from 'react-icons/hi2'
-import { motion } from 'framer-motion'
-import Stepper from '../../components/steper/Stepper'
-import StepWrapper from '../../components/steper/StepWrapper'
-import { executives } from '../../data/executives'
+} from 'react-icons/fi';
+import { HiOutlineBuildingOffice2, HiOutlineMegaphone } from 'react-icons/hi2';
+import { motion } from 'framer-motion';
+import Stepper from '../steper/Stepper';
+import StepWrapper from '../steper/StepWrapper';
+import { executives } from '../../data/executives';
 
-const purposes = [
+interface Purpose {
+  id: number;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+interface Executive {
+  id: number;
+  name: string;
+  role: string;
+  image?: string;
+}
+
+interface FormData {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  purpose: string | null;
+  executive: string | null;
+}
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+}
+
+interface SelectCardProps {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+}
+
+interface ExecCardProps {
+  exec: Executive;
+  active: boolean;
+  onClick: () => void;
+}
+
+interface NavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'solid' | 'ghost';
+  children: React.ReactNode;
+}
+
+const purposes: Purpose[] = [
   { id: 1, label: 'Platform Support / Technical Issues', icon: FiTerminal },
   { id: 2, label: 'Business Proposals', icon: FiMonitor },
   { id: 3, label: 'Marketing Visibility', icon: HiOutlineMegaphone },
   { id: 4, label: 'Other', icon: FiSettings },
-]
+];
 
 export default function ScheduleMeeting() {
-  const [step, setStep] = useState(0)
-  const [data, setData] = useState({
+  const [step, setStep] = useState<number>(0);
+  const [data, setData] = useState<FormData>({
     name: '',
     email: '',
     company: '',
     phone: '',
     purpose: null,
     executive: null,
-  })
+  });
 
-  const handleNext = () => step < 3 && setStep(step + 1)
-  const handlePrev = () => step > 0 && setStep(step - 1)
+  const handleNext = () => step < 3 && setStep(step + 1);
+  const handlePrev = () => step > 0 && setStep(step - 1);
 
-  const update = (field) => (e) =>
-    setData({ ...data, [field]: e.target ? e.target.value : e })
+  const update = (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement> | string) => {
+    const value = typeof e === 'string' ? e : e.target.value;
+    setData(prev => ({ ...prev, [field]: value }));
+  };
 
   return (
     <section className='mx-auto mt-10 max-w-3xl px-4 py-10 min-h-screen'>
@@ -89,8 +136,6 @@ export default function ScheduleMeeting() {
                 onChange={update('phone')}
               />
             </form>
-
-            {/* Navigation handled outside */}
           </StepWrapper>
         )}
 
@@ -114,8 +159,6 @@ export default function ScheduleMeeting() {
                 />
               ))}
             </div>
-
-            {/* Navigation handled outside */}
           </StepWrapper>
         )}
 
@@ -125,7 +168,7 @@ export default function ScheduleMeeting() {
               Who Would You Like to Meet With?
             </h2>
             <p className='text-sm text-gray-400'>
-              Choose the team member you’d prefer to connect with. Each of our
+              Choose the team member you'd prefer to connect with. Each of our
               executives brings unique expertise to support your goals. Select
               the profile that best aligns with your topic or interest.
             </p>
@@ -140,8 +183,6 @@ export default function ScheduleMeeting() {
                 />
               ))}
             </div>
-
-            {/* Navigation handled outside */}
           </StepWrapper>
         )}
 
@@ -154,19 +195,16 @@ export default function ScheduleMeeting() {
             >
               ✓
             </motion.div>
-            <h2 className='text-xl font-semibold'>You’re Almost Done</h2>
+            <h2 className='text-xl font-semibold'>You're Almost Done</h2>
             <p className='text-sm text-gray-400'>
-              Please review all the information you’ve provided before
+              Please review all the information you've provided before
               submitting your request. Once submitted, a confirmation email will
               be sent, and our team will follow up shortly.
             </p>
-
-            {/* Navigation handled outside */}
           </StepWrapper>
         )}
       </div>
 
-      {/* ————— External Navigation ————— */}
       <div className='mx-auto mt-6 flex w-full max-w-lg justify-between'>
         {step > 0 ? (
           <NavButton variant='ghost' onClick={handlePrev}>
@@ -194,12 +232,10 @@ export default function ScheduleMeeting() {
         )}
       </div>
     </section>
-  )
+  );
 }
 
-/* —————————————— sub-components —————————————— */
-
-function Input({ label, Icon, ...props }) {
+function Input({ label, Icon, ...props }: InputProps) {
   return (
     <label className='relative flex flex-col gap-1 text-sm text-rwa'>
       {label}
@@ -209,25 +245,23 @@ function Input({ label, Icon, ...props }) {
       />
       <Icon className='pointer-events-none absolute right-3 top-8 h-5 w-5 text-rwa' />
     </label>
-  )
+  );
 }
 
-function NavButton({ children, variant = 'solid', ...props }) {
-  const base = 'rounded-md px-5 py-2 text-sm font-semibold transition'
+function NavButton({ children, variant = 'solid', ...props }: NavButtonProps) {
+  const base = 'rounded-md px-5 py-2 text-sm font-semibold transition';
   const styles =
     variant === 'solid'
       ? 'bg-rwa text-white hover:bg-rwa/90'
-      : 'text-gray-500 hover:text-rwa'
+      : 'text-gray-500 hover:text-rwa';
   return (
     <button className={`${base} ${styles}`} {...props}>
       {children}
     </button>
-  )
+  );
 }
 
-// Removed NavGroup – navigation now centralized outside bordered container
-
-function SelectCard({ active, onClick, icon: Icon, label }) {
+function SelectCard({ active, onClick, icon: Icon, label }: SelectCardProps) {
   return (
     <button
       type='button'
@@ -241,10 +275,10 @@ function SelectCard({ active, onClick, icon: Icon, label }) {
       </div>
       <span className='text-sm font-medium'>{label}</span>
     </button>
-  )
+  );
 }
 
-function ExecCard({ exec, active, onClick }) {
+function ExecCard({ exec, active, onClick }: ExecCardProps) {
   return (
     <button
       type='button'
@@ -269,5 +303,5 @@ function ExecCard({ exec, active, onClick }) {
         {exec.role}
       </span>
     </button>
-  )
+  );
 }

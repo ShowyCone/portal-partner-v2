@@ -1,27 +1,33 @@
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Link } from 'react-router'
-import { FiMail, FiLock } from 'react-icons/fi'
+import { useState, FormEvent } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { FiMail, FiLock } from 'react-icons/fi';
 
-const slideIn = (direction = 'left') => ({
+interface ProviderLoginFormProps {
+  onSuccess?: () => void;
+}
+
+const slideIn = (direction: 'left' | 'right' = 'left') => ({
   hidden: { opacity: 0, x: direction === 'left' ? -50 : 50 },
   visible: {
     opacity: 1,
     x: 0,
     transition: { duration: 0.6, ease: 'easeOut' },
   },
-})
+});
 
-export default function ProviderLoginForm({ onSuccess = () => {} }) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+export default function ProviderLoginForm({ onSuccess = () => {} }: ProviderLoginFormProps) {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    localStorage.setItem('isAuthenticated', 'true')
-    window.dispatchEvent(new Event('login'))
-    onSuccess()
-  }
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isAuthenticated', 'true');
+      window.dispatchEvent(new Event('login'));
+    }
+    onSuccess();
+  };
 
   return (
     <motion.div
@@ -88,7 +94,7 @@ export default function ProviderLoginForm({ onSuccess = () => {} }) {
             </span>
           </div>
           <div className='text-right'>
-            <Link className='text-sm text-white underline'>
+            <Link href="/forgot-password" className='text-sm text-white underline'>
               Forgot Password?
             </Link>
           </div>
@@ -103,18 +109,18 @@ export default function ProviderLoginForm({ onSuccess = () => {} }) {
 
         <p className='text-center text-sm text-gray-400'>
           You wanna be a partner and list your services?{' '}
-          <Link to='/apply' className='text-rwa underline'>
+          <Link href='/apply' className='text-rwa underline'>
             Apply now
           </Link>
         </p>
 
         <p className='text-center text-sm text-gray-400'>
           Are you a regular user?{' '}
-          <Link to='/login' className='text-rwa underline'>
+          <Link href='/login' className='text-rwa underline'>
             Login as user
           </Link>
         </p>
       </form>
     </motion.div>
-  )
+  );
 }

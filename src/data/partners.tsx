@@ -1,16 +1,52 @@
 import servicesData from './services'
 
+interface Service {
+  id: string
+  partnerId: string
+  price?: number
+  rating?: number
+  reviews?: number
+  tag?: string
+}
+
+interface MediaItem {
+  type: 'image' | 'video'
+  src: string
+}
+
+interface PartnerStats {
+  services: number
+  averagePrice: number
+  topCategory: string | null
+  rating: number
+  ratingCount: number
+  closedClients: number
+}
+
+interface Partner {
+  id: string
+  name: string
+  description: string
+  introduction: string
+  logo: string
+  media: MediaItem[]
+  website: string
+  stats: PartnerStats
+}
+
 // Helper: compute dynamic statistics based on related services
-const generateStats = (partnerId) => {
-  const related = servicesData.filter((s) => s.partnerId === partnerId)
+const generateStats = (partnerId: string): PartnerStats => {
+  const related = servicesData.filter((s: Service) => s.partnerId === partnerId)
   const totalServices = related.length
 
   if (!totalServices) {
     return {
-      totalServices: 0,
+      services: 0,
       averagePrice: 0,
       topCategory: null,
-      averageRating: 0,
+      rating: 0,
+      ratingCount: 0,
+      closedClients: 0,
     }
   }
 
@@ -28,10 +64,11 @@ const generateStats = (partnerId) => {
   )
 
   // Category frequency to find the most common
-  const categoryCounts = related.reduce((acc, s) => {
+  const categoryCounts = related.reduce((acc: Record<string, number>, s) => {
     if (s.tag) acc[s.tag] = (acc[s.tag] || 0) + 1
     return acc
   }, {})
+
   const topCategory = Object.keys(categoryCounts).reduce((a, b) =>
     categoryCounts[a] > categoryCounts[b] ? a : b
   )
@@ -49,7 +86,7 @@ const generateStats = (partnerId) => {
 }
 
 // Base partner objects
-const partners = [
+const partners: Omit<Partner, 'stats'>[] = [
   {
     id: '1e693596-ebca-4c73-9e36-d2026e0e5c5d',
     name: 'CryptoDevs',
@@ -93,7 +130,7 @@ const partners = [
 ]
 
 // Enrich each partner with dynamic stats
-const partnersData = partners.map((partner) => ({
+const partnersData: Partner[] = partners.map((partner) => ({
   ...partner,
   stats: generateStats(partner.id),
 }))

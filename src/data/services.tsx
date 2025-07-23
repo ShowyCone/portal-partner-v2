@@ -1,4 +1,19 @@
-const servicesData = [
+interface Service {
+  id: string;
+  partnerId: string;
+  title: string;
+  rating: number;
+  reviews: number;
+  price: number;
+  tag: string;
+  description: string;
+  siteUrl: string;
+  image: string;
+  includes: string[];
+  favorite: boolean;
+}
+
+const servicesData: Service[] = [
   {
     id: 'b3e1ef5a-947f-408b-8d46-962f8c3d3c31',
     partnerId: '1e693596-ebca-4c73-9e36-d2026e0e5c5d',
@@ -7,8 +22,7 @@ const servicesData = [
     reviews: 112,
     price: 1250,
     tag: 'Solidity',
-    description:
-      'Creation and auditing of smart contracts on the Ethereum network to ensure security and efficiency.',
+    description: 'Creation and auditing of smart contracts on the Ethereum network to ensure security and efficiency.',
     siteUrl: '#',
     image: '/container.webp',
     includes: [
@@ -26,8 +40,7 @@ const servicesData = [
     reviews: 87,
     price: 850,
     tag: 'Security',
-    description:
-      'Comprehensive vulnerability analysis of dApps and protocols to prevent attacks and protect digital assets.',
+    description: 'Comprehensive vulnerability analysis of dApps and protocols to prevent attacks and protect digital assets.',
     siteUrl: '#',
     image: '/rectangle.webp',
     includes: [
@@ -45,8 +58,7 @@ const servicesData = [
     reviews: 64,
     price: 980,
     tag: 'UI/UX',
-    description:
-      'Design of intuitive and attractive user interfaces for decentralized applications, optimized for adoption.',
+    description: 'Design of intuitive and attractive user interfaces for decentralized applications, optimized for adoption.',
     siteUrl: '#',
     image: '/rectangle_9.webp',
     includes: [
@@ -64,8 +76,7 @@ const servicesData = [
     reviews: 51,
     price: 600,
     tag: 'Chainlink',
-    description:
-      'Connecting smart contracts with real-world data through decentralized oracles like Chainlink.',
+    description: 'Connecting smart contracts with real-world data through decentralized oracles like Chainlink.',
     siteUrl: '#',
     image: '/container.webp',
     includes: [
@@ -83,8 +94,7 @@ const servicesData = [
     reviews: 143,
     price: 720,
     tag: 'Tokens',
-    description:
-      'Development and deployment of custom ERC-20 standard fungible tokens for projects and ecosystems.',
+    description: 'Development and deployment of custom ERC-20 standard fungible tokens for projects and ecosystems.',
     siteUrl: '#',
     image: '/rectangle_9.webp',
     includes: [
@@ -102,8 +112,7 @@ const servicesData = [
     reviews: 99,
     price: 1500,
     tag: 'Strategy',
-    description:
-      'Strategic advisory for companies looking to implement blockchain and Web3 solutions in their business models.',
+    description: 'Strategic advisory for companies looking to implement blockchain and Web3 solutions in their business models.',
     siteUrl: '#',
     image: '/rectangle.webp',
     includes: [
@@ -121,8 +130,7 @@ const servicesData = [
     reviews: 73,
     price: 2500,
     tag: 'NFT',
-    description:
-      'Building marketplace platforms for buying, selling and exchanging Non-Fungible Tokens (NFTs).',
+    description: 'Building marketplace platforms for buying, selling and exchanging Non-Fungible Tokens (NFTs).',
     siteUrl: '#',
     image: '/container.webp',
     includes: [
@@ -140,8 +148,7 @@ const servicesData = [
     reviews: 58,
     price: 1800,
     tag: 'DeFi',
-    description:
-      'Strategies and tools for optimized management of digital assets in decentralized finance protocols.',
+    description: 'Strategies and tools for optimized management of digital assets in decentralized finance protocols.',
     siteUrl: '#',
     image: '/rectangle.webp',
     includes: [
@@ -151,11 +158,11 @@ const servicesData = [
     ],
     favorite: false,
   },
-]
+];
 
 // Remove static siteName to avoid duplication; partner name will be looked up dynamically
 servicesData.forEach((svc) => {
-  if ('siteName' in svc) delete svc.siteName
-})
+  if ('siteName' in svc) delete svc.siteName;
+});
 
-export default servicesData
+export default servicesData;

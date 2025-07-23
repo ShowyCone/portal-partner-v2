@@ -1,8 +1,8 @@
 import React from 'react'
-import { motion } from 'framer-motion'
-import ProviderLoginForm from '../../components/forms/ProviderLoginForm'
+import { motion, Variants } from 'framer-motion'
+import ProviderLoginForm from '../forms/ProviderLoginForm'
 
-const slideIn = (direction = 'right') => ({
+const slideIn = (direction: 'left' | 'right' = 'right'): Variants => ({
   hidden: { opacity: 0, x: direction === 'left' ? -50 : 50 },
   visible: {
     opacity: 1,
@@ -11,7 +11,7 @@ const slideIn = (direction = 'right') => ({
   },
 })
 
-const ProviderLogin = () => (
+const ProviderLogin: React.FC = () => (
   <section className='flex flex-col md:flex-row bg-white min-h-[calc(100vh-5rem)] justify-center items-center gap-12 p-12'>
     <ProviderLoginForm />
 
