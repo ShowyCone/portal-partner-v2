@@ -1,41 +1,81 @@
 import React from 'react'
+import Link from 'next/link'
 import { FaHome } from 'react-icons/fa'
-import { useRouter } from 'next/router'
+import { useRouter, useParams } from 'next/navigation'
 import partnersData from '../../data/partners'
 import PartnerProfile from './PartnerProfile'
 import servicesData from '../../data/services'
 import ServiceSlider from '../../components/ServiceSlider'
 import ReviewsSection from '../../components/ReviewsSection'
 
-interface Partner {
-  id: string
+interface PartnerProfileProps {
+  logo: string
   name: string
-  // Add other partner properties here
+  description: string
+  tags?: string[]
+  media: Array<{
+    type: 'image' | 'video'
+    src: string
+  }>
+  stats: {
+    closedClients: number
+    rating: number
+    ratingCount: number
+    services: number
+  }
+  introduction?: string
 }
 
-interface Service {
-  id: string
-  partnerId: string
-  tag: string
-  // Add other service properties here
+interface PartnerDashboardProps {
+  partnerId?: string
 }
 
-const PartnerDashboard = () => {
+const PartnerDashboard = ({
+  partnerId: propPartnerId,
+}: PartnerDashboardProps = {}) => {
   const router = useRouter()
-  const { id } = router.query as { id: string }
-  const partner = partnersData.find((p: Partner) => p.id === id)
-  
-  // Filter partner services and obtain up to three unique tags
-  const partnerServices = servicesData.filter((s: Service) => s.partnerId === id)
-  const uniqueTags = [...new Set(partnerServices.map((s: Service) => s.tag))].slice(0, 3)
+  const params = useParams()
+
+  const partnerId = propPartnerId || (params.id as string)
+
+  const partner = partnersData.find((p) => p.id === partnerId)
+
+  const partnerServices = servicesData.filter((s) => s.partnerId === partnerId)
 
   if (!partner) {
     return (
       <section className='container mx-auto px-4 py-12'>
-        <p className='text-center text-gray-600'>Socio no encontrado.</p>
+        <p className='text-center text-gray-600'>
+          Partner not found: {partnerId}
+        </p>
+        <div className='mt-4 text-center text-sm text-gray-500'>
+          <Link
+            href={'/partners'}
+            className='bg-rwa px-5 py-1 rounded-2xl text-white text-xl'
+          >
+            Go to all partners
+          </Link>
+        </div>
       </section>
     )
   }
+
+  const partnerProfileData: PartnerProfileProps = {
+    logo: partner.logo,
+    name: partner.name,
+    description: partner.description,
+    tags: [],
+    media: partner.media,
+    stats: {
+      closedClients: partner.stats.closedClients,
+      rating: partner.stats.rating,
+      ratingCount: partner.stats.ratingCount,
+      services: partner.stats.services,
+    },
+    introduction: partner.introduction,
+  }
+
+  const uniqueTags = [...new Set(partnerServices.map((s) => s.tag))].slice(0, 3)
 
   return (
     <section className='container mx-auto px-4 py-12'>
@@ -46,21 +86,19 @@ const PartnerDashboard = () => {
         <span>/</span>
         <span className='text-rwa'>{partner.name}</span>
       </div>
-      <PartnerProfile partner={partner} />
-      {/* Service sliders by tag */}
-      {uniqueTags.map((tag) => {
-        const tagServices = partnerServices.filter((s: Service) => s.tag === tag)
-        return (
-          <ServiceSlider
-            key={tag}
-            partnerName={partner.name}
-            tag={tag}
-            services={tagServices}
-          />
-        )
-      })}
 
-      <ReviewsSection />
+      <PartnerProfile partner={partnerProfileData} />
+
+      {uniqueTags.map((tag) => (
+        <ServiceSlider
+          key={tag}
+          partnerName={partner.name}
+          tag={tag}
+          services={partnerServices.filter((s) => s.tag === tag)}
+        />
+      ))}
+
+      <ReviewsSection partnerId={partnerId} />
     </section>
   )
 }

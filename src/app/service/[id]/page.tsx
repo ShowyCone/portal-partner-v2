@@ -1,10 +1,12 @@
-'use client';
-import SingleService from '@/components/service/SingleService';
+'use client'
+import { use } from 'react'
+import SingleService from '@/components/service/SingleService'
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>
 }
 
 export default function ServicePage({ params }: Props) {
-  return <SingleService id={params.id} />;
-} 
+  const { id } = use(params)
+  return <SingleService id={id} />
+}

@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { FaUserCircle, FaAngleDown } from 'react-icons/fa'
 
 const Header: React.FC = () => {
@@ -31,14 +31,12 @@ const Header: React.FC = () => {
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
       <div className='flex items-center space-x-8'>
-        <Link href='/' passHref legacyBehavior>
-          <a>
-            <img
-              src='/rwamainlogo.svg'
-              alt='Logo'
-              className='h-8 object-contain'
-            />
-          </a>
+        <Link href='/' passHref>
+          <img
+            src='/rwamainlogo.svg'
+            alt='Logo'
+            className='h-8 object-contain'
+          />
         </Link>
 
         <nav className='flex items-center space-x-6'>
@@ -52,15 +50,18 @@ const Header: React.FC = () => {
           <AddressIndicator />
         ) : (
           <>
-            <Link href='/login' passHref legacyBehavior>
-              <a className='text-gray-700 hover:text-rwa cursor-pointer transition-colors duration-200 font-medium'>
-                Sign In
-              </a>
+            <Link
+              href='/login'
+              className='text-gray-700 hover:text-rwa cursor-pointer transition-colors duration-200 font-medium'
+            >
+              Sign In
             </Link>
-            <Link href='/login' passHref legacyBehavior>
-              <a className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'>
-                Sign Up
-              </a>
+
+            <Link
+              href='/login'
+              className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'
+            >
+              Sign Up
             </Link>
           </>
         )}
@@ -75,22 +76,25 @@ type NavItemProps = {
 }
 
 const NavItem: React.FC<NavItemProps> = ({ href, label }) => {
-  const isActive = typeof window !== 'undefined' ? window.location.pathname === href : false
+  const pathname = usePathname() // Hook de Next.js
+  const isActive = pathname === href
+
   return (
-    <Link href={href} passHref legacyBehavior>
-      <a
-        className={`cursor-pointer transition-colors duration-200 font-medium ${
-          isActive ? 'text-rwa' : 'text-gray-700 hover:text-rwa'
-        }`}
-      >
-        {label}
-      </a>
+    <Link
+      href={href}
+      className={`cursor-pointer transition-colors duration-200 font-medium ${
+        isActive ? 'text-rwa' : 'text-gray-700 hover:text-rwa'
+      }`}
+    >
+      {label}
     </Link>
   )
 }
 
 const AddressIndicator: React.FC = () => {
-  const [fullAddress, setFullAddress] = useState<string>('0xd123A4B5C6D7E8F923FG2')
+  const [fullAddress, setFullAddress] = useState<string>(
+    '0xd123A4B5C6D7E8F923FG2'
+  )
   const [expanded, setExpanded] = useState<boolean>(false)
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -135,7 +139,8 @@ const AddressIndicator: React.FC = () => {
     }
   }, [])
 
-  const truncateAddress = (addr: string) => `${addr.slice(0, 7)}...${addr.slice(-5)}`
+  const truncateAddress = (addr: string) =>
+    `${addr.slice(0, 7)}...${addr.slice(-5)}`
 
   return (
     <div className='flex items-center gap-2'>
@@ -160,7 +165,9 @@ const AddressIndicator: React.FC = () => {
         >
           <FaAngleDown
             size={18}
-            className={`text-rwa transition-transform ${menuOpen ? 'rotate-180' : ''}`}
+            className={`text-rwa transition-transform ${
+              menuOpen ? 'rotate-180' : ''
+            }`}
           />
           <FaUserCircle size={18} className='text-rwa' />
         </button>
@@ -175,17 +182,23 @@ const AddressIndicator: React.FC = () => {
               className='absolute right-0 mt-3 w-56 bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-50 p-2'
             >
               <li>
-                <Link href='/cart' passHref legacyBehavior>
-                  <a className='block px-4 py-2 text-gray-700 hover:bg-gray-100' onClick={() => setMenuOpen(false)}>
+                <Link href='/cart' passHref>
+                  <span
+                    className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
+                    onClick={() => setMenuOpen(false)}
+                  >
                     Cart
-                  </a>
+                  </span>
                 </Link>
               </li>
               <li>
-                <Link href='/profile' passHref legacyBehavior>
-                  <a className='block px-4 py-2 text-gray-700 hover:bg-gray-100' onClick={() => setMenuOpen(false)}>
+                <Link href='/profile' passHref>
+                  <span
+                    className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
+                    onClick={() => setMenuOpen(false)}
+                  >
                     Profile
-                  </a>
+                  </span>
                 </Link>
               </li>
               <li className='border-t border-gray-200 my-1' />
@@ -200,10 +213,13 @@ const AddressIndicator: React.FC = () => {
                 </button>
               </li>
               <li>
-                <Link href='/support' passHref legacyBehavior>
-                  <a className='block px-4 py-2 text-gray-700 hover:bg-gray-100' onClick={() => setMenuOpen(false)}>
+                <Link href='/support' passHref>
+                  <span
+                    className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
+                    onClick={() => setMenuOpen(false)}
+                  >
                     Support Center
-                  </a>
+                  </span>
                 </Link>
               </li>
               <li>

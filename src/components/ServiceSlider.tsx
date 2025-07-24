@@ -1,32 +1,52 @@
-// @ts-nocheck
 import React, { useRef, useEffect, useState } from 'react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import ServiceCard from './ui/ServiceCard'
 
-const ServiceSlider = ({
+interface Service {
+  id: string
+  partnerId: string
+  title: string
+  rating: number
+  reviews: number
+  price: number
+  tag: string
+  description: string
+  siteUrl: string
+  image: string
+  includes: string[]
+  favorite: boolean
+}
+
+type Props = {
+  services: Service[]
+  partnerName?: string
+  tag?: string
+  title?: string
+}
+
+const ServiceSlider: React.FC<Props> = ({
   services = [],
   partnerName = '',
   tag = '',
   title = '',
 }) => {
-  const containerRef = useRef(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const [showControls, setShowControls] = useState(false)
 
-  // Check if overflow exists to toggle navigation arrows
   useEffect(() => {
     const checkOverflow = () => {
       if (!containerRef.current) return
       const { scrollWidth, clientWidth } = containerRef.current
       setShowControls(scrollWidth > clientWidth)
     }
+
     checkOverflow()
     window.addEventListener('resize', checkOverflow)
     return () => window.removeEventListener('resize', checkOverflow)
   }, [services])
 
-  // Scroll carousel by 80% of visible width
-  const scroll = (direction = 'right') => {
+  const scroll = (direction: 'left' | 'right') => {
     if (!containerRef.current) return
     const { clientWidth } = containerRef.current
     const amount = clientWidth * 0.8

@@ -1,12 +1,20 @@
-// @ts-nocheck
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import ReviewCard from './ReviewCard'
 import reviewsData from '../data/reviews'
 
-const ReviewsSection = () => {
+interface ReviewsSectionProps {
+  partnerId: string
+}
+
+const ReviewsSection: React.FC<ReviewsSectionProps> = ({ partnerId }) => {
   const [showAll, setShowAll] = useState(false)
-  const displayedReviews = showAll ? reviewsData : reviewsData.slice(0, 6)
+  const filteredReviews = reviewsData.filter(
+    (review) => review.partnerId === partnerId
+  )
+  const displayedReviews = showAll
+    ? filteredReviews
+    : filteredReviews.slice(0, 6)
 
   return (
     <section className='container mx-auto px-4 py-12'>

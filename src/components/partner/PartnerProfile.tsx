@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
@@ -14,7 +13,33 @@ import {
   FaStar,
 } from 'react-icons/fa'
 
-const defaultPartner = {
+interface MediaItem {
+  type: 'image' | 'video'
+  src: string
+  thumbnail?: string
+}
+
+interface PartnerStats {
+  closedClients: number
+  rating: number
+  ratingCount: number
+  services: number
+}
+
+interface PartnerProfileProps {
+  logo: string
+  name: string
+  description: string
+  introduction?: string
+  tags?: string[]
+  media?: MediaItem[]
+  stats?: Partial<PartnerStats>
+  rating?: number
+  reviews?: number
+  services?: number | Array<unknown>
+}
+
+const defaultPartner: PartnerProfileProps = {
   logo: 'https://placehold.co/80x80',
   name: 'Crypto Corp',
   description:
@@ -42,7 +67,11 @@ const fadeInUp = {
   }),
 }
 
-const PartnerProfile = ({ partner = defaultPartner }) => {
+const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
+  partner = defaultPartner,
+}: {
+  partner?: PartnerProfileProps
+}) => {
   const {
     logo = defaultPartner.logo,
     name = defaultPartner.name,
@@ -53,46 +82,35 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
     rating,
     reviews,
     services,
+    introduction,
   } = partner
 
-  const computedTags = tags && tags.length ? tags : []
-
-  const computedMedia =
-    media && media.length ? media : [{ type: 'image', src: logo }]
-
+  const computedTags = tags?.length ? tags : []
+  const computedMedia = media?.length ? media : [{ type: 'image', src: logo }]
   const computedStats = stats || {
     closedClients: 0,
     rating: rating || 0,
     ratingCount: reviews || 0,
     services: Array.isArray(services) ? services.length : 0,
   }
-  // Introduction text: use partner.introduction if available, otherwise fall back to description
-  const introductionText = partner.introduction || description
+  const introductionText = introduction || description
+
+  // Media carousel state
   const [currentIndex, setCurrentIndex] = useState(0)
+  const currentMedia = computedMedia[currentIndex]
+
+  // Video player state
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
   const [volume, setVolume] = useState(1)
   const [isMuted, setIsMuted] = useState(false)
-  const mainVideoRef = useRef(null)
-  const thumbContainerRef = useRef(null)
+  const mainVideoRef = useRef<HTMLVideoElement>(null)
+  const thumbContainerRef = useRef<HTMLDivElement>(null)
 
-  const currentMedia = computedMedia[currentIndex]
-
-  // Video helpers
-  useEffect(() => {
-    if (currentMedia.type !== 'video') {
-      setIsPlaying(false)
-      setProgress(0)
-    }
-  }, [currentMedia])
-
+  // Video control handlers
   const togglePlay = () => {
     if (!mainVideoRef.current) return
-    if (isPlaying) {
-      mainVideoRef.current.pause()
-    } else {
-      mainVideoRef.current.play()
-    }
+    isPlaying ? mainVideoRef.current.pause() : mainVideoRef.current.play()
     setIsPlaying(!isPlaying)
   }
 
@@ -103,7 +121,7 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
     setProgress(percentage || 0)
   }
 
-  const handleProgressChange = (e) => {
+  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!mainVideoRef.current) return
     const value = +e.target.value
     mainVideoRef.current.currentTime =
@@ -111,7 +129,7 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
     setProgress(value)
   }
 
-  const handleVolumeChange = (e) => {
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = +e.target.value
     setVolume(value)
     if (mainVideoRef.current) {
@@ -128,12 +146,10 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
 
   const enterFullscreen = () => {
     if (!mainVideoRef.current) return
-    if (mainVideoRef.current.requestFullscreen) {
-      mainVideoRef.current.requestFullscreen()
-    }
+    mainVideoRef.current.requestFullscreen?.()
   }
 
-  // Carousel helpers
+  // Carousel handlers
   const changeIndex = (next = true) => {
     setCurrentIndex((prev) => {
       const newIdx = next ? prev + 1 : prev - 1
@@ -143,7 +159,7 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
     })
   }
 
-  const scrollThumbnails = (direction = 'left') => {
+  const scrollThumbnails = (direction: 'left' | 'right') => {
     if (!thumbContainerRef.current) return
     const scrollAmount = direction === 'left' ? -150 : 150
     thumbContainerRef.current.scrollBy({
@@ -152,6 +168,14 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
     })
   }
 
+  // Effects
+  useEffect(() => {
+    if (currentMedia.type !== 'video') {
+      setIsPlaying(false)
+      setProgress(0)
+    }
+  }, [currentMedia])
+
   return (
     <motion.div
       variants={fadeInUp}
@@ -159,7 +183,7 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
       animate='visible'
       className='max-w-7xl mx-auto py-8'
     >
-      {/* Header */}
+      {/* Header section */}
       <motion.div
         variants={fadeInUp}
         custom={1}
@@ -174,16 +198,10 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
           <h1 className='text-xl sm:text-2xl font-semibold'>{name}</h1>
         </div>
         <div className='flex gap-3'>
-          <button
-            className='border border-rwa text-rwa rounded-xl p-2 hover:bg-gray-50 transition-all hover:scale-105'
-            aria-label='Website'
-          >
+          <button className='border border-rwa text-rwa rounded-xl p-2 hover:bg-gray-50 transition-all hover:scale-105'>
             <FaGlobe className='text-lg' />
           </button>
-          <button
-            className='border border-gray-300 text-gray-400 rounded-xl p-2 hover:bg-gray-50 transition-all hover:scale-105'
-            aria-label='Report'
-          >
+          <button className='border border-gray-300 text-gray-400 rounded-xl p-2 hover:bg-gray-50 transition-all hover:scale-105'>
             <FaExclamationTriangle className='text-lg' />
           </button>
         </div>

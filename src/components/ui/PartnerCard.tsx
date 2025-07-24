@@ -1,8 +1,24 @@
-import { motion } from 'framer-motion'
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { Link } from 'react-router'
+import { motion } from 'framer-motion';
+import { FaExternalLinkAlt } from 'react-icons/fa';
+import Link from 'next/link';
 
-const PartnerCard = ({ partner, tags = [] }) => {
+interface Partner {
+  id: string;
+  name: string;
+  logo: string;
+  website: string;
+  description: string;
+  stats: {
+    services: number;
+  };
+}
+
+interface PartnerCardProps {
+  partner: Partner;
+  tags?: string[];
+}
+
+const PartnerCard: React.FC<PartnerCardProps> = ({ partner, tags = [] }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -32,7 +48,7 @@ const PartnerCard = ({ partner, tags = [] }) => {
       <p className='text-sm text-gray-700'>{partner.description}</p>
       <div className='flex justify-end'>
         <Link
-          to={`/partner/${partner.id}`}
+          href={`/partner/${partner.id}`}
           className='rounded-md border border-rwa px-4 py-1.5 text-sm font-medium text-rwa transition-colors hover:bg-rwa hover:text-white'
         >
           View Services
@@ -65,7 +81,7 @@ const PartnerCard = ({ partner, tags = [] }) => {
         </div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default PartnerCard
+export default PartnerCard;

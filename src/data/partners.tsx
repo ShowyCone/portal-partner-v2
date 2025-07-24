@@ -1,6 +1,6 @@
 import servicesData from './services'
 
-interface Service {
+export interface Service {
   id: string
   partnerId: string
   price?: number
@@ -23,7 +23,7 @@ interface PartnerStats {
   closedClients: number
 }
 
-interface Partner {
+export interface Partner {
   id: string
   name: string
   description: string

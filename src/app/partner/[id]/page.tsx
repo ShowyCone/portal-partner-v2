@@ -1,8 +1,12 @@
-'use client';
-import PartnerProfile from '@/components/partner/PartnerProfile';
+'use client'
+import { use } from 'react'
+import PartnerDashboard from '@/components/partner/PartnerDashboard'
 
-interface Props {}
+interface Props {
+  params: Promise<{ id: string }>
+}
 
-export default function PartnerPage() {
-  return <PartnerProfile />;
-} 
+export default function PartnerPage({ params }: Props) {
+  const { id } = use(params)
+  return <PartnerDashboard partnerId={id} />
+}

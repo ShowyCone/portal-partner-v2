@@ -1,5 +1,5 @@
-import Hero from './components/Hero'
-import AllPartners from './components/AllPartners'
+import Hero from './Hero'
+import AllPartners from './AllPartners'
 
 const Partners = () => {
   return (

@@ -1,12 +1,13 @@
+'use client'
 import React, { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import partnersData from '../../../data/partners'
-import servicesData from '../../../data/services'
-import PartnerCard from '../../../components/ui/PartnerCard'
+import partnersData, { type Partner } from '../../data/partners'
+import servicesData, { type Service } from '../../data/services'
+import PartnerCard from '../ui/PartnerCard'
 
 // Determine number of items per page based on viewport
-const getItemsPerPage = () => {
+const getItemsPerPage = (): number => {
   if (typeof window === 'undefined') return 12
   const width = window.innerWidth
   if (width < 640) return 4 // mobile
@@ -15,8 +16,8 @@ const getItemsPerPage = () => {
 }
 
 const AllPartners = () => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage())
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [itemsPerPage, setItemsPerPage] = useState<number>(getItemsPerPage())
 
   // Adapt itemsPerPage on resize
   useEffect(() => {
@@ -27,12 +28,12 @@ const AllPartners = () => {
 
   // Compute tags for each partner (max 3) derived from its services
   const partnersWithTags = useMemo(() => {
-    return partnersData.map((partner) => {
+    return partnersData.map((partner: Partner) => {
       const relatedServices = servicesData.filter(
-        (svc) => svc.partnerId === partner.id && svc.tag
+        (svc: Service) => svc.partnerId === partner.id && svc.tag
       )
       const uniqueTags = [
-        ...new Set(relatedServices.map((svc) => svc.tag)),
+        ...new Set(relatedServices.map((svc: Service) => svc.tag)),
       ].slice(0, 3)
       return { ...partner, tags: uniqueTags }
     })
@@ -50,7 +51,7 @@ const AllPartners = () => {
   useEffect(() => setCurrentPage(1), [itemsPerPage])
 
   return (
-    <section className='pb-5 px-4 md:px-10 max-w-screen-xl mx-auto overflow-hidden'>
+    <section className='pb-15 px-4 md:px-10 max-w-screen-xl mx-auto overflow-hidden'>
       <motion.div
         className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
         initial='hidden'
@@ -60,7 +61,7 @@ const AllPartners = () => {
           visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } },
         }}
       >
-        {currentPartners.map((partner) => (
+        {currentPartners.map((partner: Partner & { tags: string[] }) => (
           <motion.div
             key={partner.id}
             variants={{

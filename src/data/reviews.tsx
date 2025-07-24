@@ -1,11 +1,14 @@
+import servicesData from './services'
+
 interface Review {
-  id: string;
-  userId: string;
-  reviewer: string;
-  serviceId: string;
-  serviceName: string;
-  rating: number;
-  text: string;
+  id: string
+  userId: string
+  reviewer: string
+  serviceId: string
+  serviceName: string
+  rating: number
+  text: string
+  partnerId: string // Add this line
 }
 
 const reviewsData: Review[] = [
@@ -17,6 +20,7 @@ const reviewsData: Review[] = [
     serviceName: 'Smart Contract Development',
     rating: 4.9,
     text: 'CryptoDevs delivered our smart contracts with impeccable quality and exhaustive tests.',
+    partnerId: '1e693596-ebca-4c73-9e36-d2026e0e5c5d',
   },
   {
     id: 'd1d2a3f7-9c4b-4d76-b3b2-4a83a5f7a4c0',
@@ -26,6 +30,7 @@ const reviewsData: Review[] = [
     serviceName: 'Web3 Security Audit',
     rating: 5.0,
     text: 'SecureChain uncovered critical issues we had missed and provided clear remediation steps.',
+    partnerId: 'de2b32d4-c003-4327-9f14-5eb5adb56c1f',
   },
   {
     id: '87bf6d0e-0347-46de-b9ee-f781b3c5e4a1',
@@ -35,6 +40,7 @@ const reviewsData: Review[] = [
     serviceName: 'dApp Interface Design',
     rating: 4.8,
     text: 'PixelPerfect created a beautiful, responsive interface that our users love.',
+    partnerId: 'a9c78187-e359-4b2a-9a77-4f9a45e23c07',
   },
   {
     id: '9af3d822-5c7a-46d7-b26b-419fd4c7c520',
@@ -44,6 +50,7 @@ const reviewsData: Review[] = [
     serviceName: 'Oracle Integration',
     rating: 4.7,
     text: 'Integration was smooth and documentation thorough; our contract now pulls external data flawlessly.',
+    partnerId: '1e693596-ebca-4c73-9e36-d2026e0e5c5d',
   },
   {
     id: 'b3c9db29-4a12-4408-9fb5-3e2cb9d4e7c7',
@@ -53,6 +60,7 @@ const reviewsData: Review[] = [
     serviceName: 'ERC-20 Token Creation',
     rating: 4.9,
     text: 'TokenFactory guided us through compliance and delivered a gas-efficient token contract.',
+    partnerId: '2dda0ec5-6806-4bf4-ab80-f673aaa1c1a5',
   },
   {
     id: 'cdf5701d-5a8a-437d-9f31-8e2f27074e76',
@@ -62,6 +70,7 @@ const reviewsData: Review[] = [
     serviceName: 'Blockchain Consulting',
     rating: 5.0,
     text: 'Their strategic insights saved us months of R&D and optimized our blockchain roadmap.',
+    partnerId: 'de2b32d4-c003-4327-9f14-5eb5adb56c1f',
   },
   {
     id: 'e3b17f9b-b1a9-41f7-9f90-0e4be7c63e59',
@@ -71,6 +80,7 @@ const reviewsData: Review[] = [
     serviceName: 'NFT Marketplace Development',
     rating: 4.8,
     text: 'Marketplace launched on time with seamless wallet integration and a sleek UI.',
+    partnerId: 'a9c78187-e359-4b2a-9a77-4f9a45e23c07',
   },
   {
     id: 'fc7e8c34-0a8e-44d1-8897-2ac1e9f4b0ff',
@@ -80,7 +90,13 @@ const reviewsData: Review[] = [
     serviceName: 'DeFi Treasury Management',
     rating: 4.9,
     text: 'Their yield strategies increased our APY by 20% while minimizing risk.',
+    partnerId: '2dda0ec5-6806-4bf4-ab80-f673aaa1c1a5',
   },
-];
+]
 
-export default reviewsData;
+// Remove static siteName to avoid duplication; partner name will be looked up dynamically
+servicesData.forEach((svc) => {
+  if ('siteName' in svc) delete svc.siteName
+})
+
+export default reviewsData

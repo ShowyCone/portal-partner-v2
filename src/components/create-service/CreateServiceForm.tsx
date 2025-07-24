@@ -2,7 +2,9 @@ import { useState, useRef, FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import { FaCloudUploadAlt, FaTimes, FaCheck } from 'react-icons/fa'
 import { AiOutlineCheck } from 'react-icons/ai'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
+
+// "Go to Dashboard" button in 696
 
 const CATEGORIES = [
   'Smart Contract Dev',
@@ -15,7 +17,7 @@ const CATEGORIES = [
 
 const PRICE_PLANS = ['Basic', 'Standard', 'Pro'] as const
 
-type PricePlan = typeof PRICE_PLANS[number]
+type PricePlan = (typeof PRICE_PLANS)[number]
 
 interface FormState {
   title: string
@@ -25,11 +27,14 @@ interface FormState {
   priceType: 'fixed' | 'plans'
   fixedSale: string
   fixedPartner: string
-  plans: Record<PricePlan, {
-    enabled: boolean
-    sale: string
-    partner: string
-  }>
+  plans: Record<
+    PricePlan,
+    {
+      enabled: boolean
+      sale: string
+      partner: string
+    }
+  >
   contentFixed: string
   contentPlans: Record<PricePlan, string>
   faqEnabled: boolean
@@ -106,7 +111,11 @@ export default function CreateServiceForm() {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
@@ -120,7 +129,11 @@ export default function CreateServiceForm() {
     }))
   }
 
-  const handlePlanField = (plan: PricePlan, field: 'sale' | 'partner', value: string) => {
+  const handlePlanField = (
+    plan: PricePlan,
+    field: 'sale' | 'partner',
+    value: string
+  ) => {
     setForm((prev) => ({
       ...prev,
       plans: {
@@ -148,7 +161,10 @@ export default function CreateServiceForm() {
   }
 
   const removeTag = (tagToRemove: string) => {
-    setForm((prev) => ({ ...prev, tags: prev.tags.filter((tag) => tag !== tagToRemove) }))
+    setForm((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
+    }))
   }
 
   const addFaq = () => {
@@ -166,7 +182,10 @@ export default function CreateServiceForm() {
   }
 
   const removeFaq = (idx: number) => {
-    setForm((prev) => ({ ...prev, faqs: prev.faqs.filter((_, i) => i !== idx) }))
+    setForm((prev) => ({
+      ...prev,
+      faqs: prev.faqs.filter((_, i) => i !== idx),
+    }))
   }
 
   const handleSubmit = (e: FormEvent) => {
@@ -634,7 +653,9 @@ export default function CreateServiceForm() {
                     type='file'
                     accept='image/*,video/mp4,application/pdf'
                     className='hidden'
-                    onChange={(e) => e.target.files && setThumbnail(e.target.files[0])}
+                    onChange={(e) =>
+                      e.target.files && setThumbnail(e.target.files[0])
+                    }
                   />
                   {thumbnail && (
                     <span className='text-xs text-green-600 mt-2'>
@@ -669,7 +690,7 @@ export default function CreateServiceForm() {
             </p>
             <button
               type='button'
-              onClick={() => router.push('/dashboard')}
+              onClick={() => router.push('/')}
               className='mt-4 px-6 py-1.5 rounded-2xl bg-rwa text-white font-medium hover:opacity-90 transition'
             >
               Go to dashboard
@@ -708,7 +729,9 @@ export default function CreateServiceForm() {
                   </div>
                   {i < totalSteps - 1 && (
                     <div
-                      className={`w-16 h-1 ${i < step ? 'bg-rwa' : 'bg-gray-200'}`}
+                      className={`w-16 h-1 ${
+                        i < step ? 'bg-rwa' : 'bg-gray-200'
+                      }`}
                     />
                   )}
                 </div>
