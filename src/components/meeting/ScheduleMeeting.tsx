@@ -1,4 +1,5 @@
-import { useState } from 'react';
+'use client'
+import { useState } from 'react'
 import {
   FiUser,
   FiMail,
@@ -6,56 +7,56 @@ import {
   FiTerminal,
   FiMonitor,
   FiSettings,
-} from 'react-icons/fi';
-import { HiOutlineBuildingOffice2, HiOutlineMegaphone } from 'react-icons/hi2';
-import { motion } from 'framer-motion';
-import Stepper from '../steper/Stepper';
-import StepWrapper from '../steper/StepWrapper';
-import { executives } from '../../data/executives';
+} from 'react-icons/fi'
+import { HiOutlineBuildingOffice2, HiOutlineMegaphone } from 'react-icons/hi2'
+import { motion } from 'framer-motion'
+import Stepper from '../steper/Stepper'
+import StepWrapper from '../steper/StepWrapper'
+import { executives } from '../../data/executives'
 
 interface Purpose {
-  id: number;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
+  id: number
+  label: string
+  icon: React.ComponentType<{ className?: string }>
 }
 
 interface Executive {
-  id: number;
-  name: string;
-  role: string;
-  image?: string;
+  id: number
+  name: string
+  role: string
+  image?: string
 }
 
 interface FormData {
-  name: string;
-  email: string;
-  company: string;
-  phone: string;
-  purpose: string | null;
-  executive: string | null;
+  name: string
+  email: string
+  company: string
+  phone: string
+  purpose: string | null
+  executive: string | null
 }
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  Icon: React.ComponentType<{ className?: string }>;
+  label: string
+  Icon: React.ComponentType<{ className?: string }>
 }
 
 interface SelectCardProps {
-  active: boolean;
-  onClick: () => void;
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
+  active: boolean
+  onClick: () => void
+  icon: React.ComponentType<{ className?: string }>
+  label: string
 }
 
 interface ExecCardProps {
-  exec: Executive;
-  active: boolean;
-  onClick: () => void;
+  exec: Executive
+  active: boolean
+  onClick: () => void
 }
 
 interface NavButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'solid' | 'ghost';
-  children: React.ReactNode;
+  variant?: 'solid' | 'ghost'
+  children: React.ReactNode
 }
 
 const purposes: Purpose[] = [
@@ -63,10 +64,10 @@ const purposes: Purpose[] = [
   { id: 2, label: 'Business Proposals', icon: FiMonitor },
   { id: 3, label: 'Marketing Visibility', icon: HiOutlineMegaphone },
   { id: 4, label: 'Other', icon: FiSettings },
-];
+]
 
 export default function ScheduleMeeting() {
-  const [step, setStep] = useState<number>(0);
+  const [step, setStep] = useState<number>(0)
   const [data, setData] = useState<FormData>({
     name: '',
     email: '',
@@ -74,15 +75,17 @@ export default function ScheduleMeeting() {
     phone: '',
     purpose: null,
     executive: null,
-  });
+  })
 
-  const handleNext = () => step < 3 && setStep(step + 1);
-  const handlePrev = () => step > 0 && setStep(step - 1);
+  const handleNext = () => step < 3 && setStep(step + 1)
+  const handlePrev = () => step > 0 && setStep(step - 1)
 
-  const update = (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement> | string) => {
-    const value = typeof e === 'string' ? e : e.target.value;
-    setData(prev => ({ ...prev, [field]: value }));
-  };
+  const update =
+    (field: keyof FormData) =>
+    (e: React.ChangeEvent<HTMLInputElement> | string) => {
+      const value = typeof e === 'string' ? e : e.target.value
+      setData((prev) => ({ ...prev, [field]: value }))
+    }
 
   return (
     <section className='mx-auto mt-10 max-w-3xl px-4 py-10 min-h-screen'>
@@ -109,7 +112,7 @@ export default function ScheduleMeeting() {
               discuss opportunities, challenges, or strategic initiatives.
             </p>
 
-            <form className='mx-auto grid max-w-lg grid-cols-1 gap-4 sm:grid-cols-2'>
+            <form className='mx-auto grid max-w-lg grid-cols-1 gap-4 sm:grid-cols-2 w-full'>
               <Input
                 label='Name'
                 Icon={FiUser}
@@ -163,17 +166,17 @@ export default function ScheduleMeeting() {
         )}
 
         {step === 2 && (
-          <StepWrapper>
+          <StepWrapper className='items-center'>
             <h2 className='text-xl font-semibold'>
               Who Would You Like to Meet With?
             </h2>
-            <p className='text-sm text-gray-400'>
+            <p className='text-sm text-gray-400 text-center'>
               Choose the team member you'd prefer to connect with. Each of our
               executives brings unique expertise to support your goals. Select
               the profile that best aligns with your topic or interest.
             </p>
 
-            <div className='grid gap-4 sm:grid-cols-3'>
+            <div className='grid gap-4 grid-cols-3'>
               {executives.map((ex) => (
                 <ExecCard
                   key={ex.id}
@@ -191,7 +194,7 @@ export default function ScheduleMeeting() {
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className='mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-rwa text-white'
+              className='mb-2 flex h-20 w-20 items-center justify-center rounded-full bg-rwa text-white text-3xl'
             >
               ✓
             </motion.div>
@@ -205,7 +208,7 @@ export default function ScheduleMeeting() {
         )}
       </div>
 
-      <div className='mx-auto mt-6 flex w-full max-w-lg justify-between'>
+      <div className='mt-6 flex w-full justify-between'>
         {step > 0 ? (
           <NavButton variant='ghost' onClick={handlePrev}>
             Previous step
@@ -232,33 +235,36 @@ export default function ScheduleMeeting() {
         )}
       </div>
     </section>
-  );
+  )
 }
 
 function Input({ label, Icon, ...props }: InputProps) {
   return (
-    <label className='relative flex flex-col gap-1 text-sm text-rwa'>
+    <label className='relative flex flex-col gap-4 text-sm text-rwa'>
       {label}
-      <input
-        className='w-full rounded-md border-gray-300 pr-10 text-sm focus:border-rwa focus:ring-rwa'
-        {...props}
-      />
-      <Icon className='pointer-events-none absolute right-3 top-8 h-5 w-5 text-rwa' />
+      <div className='h-fit w-full border border-gray-200 rounded-3xl py-3 px-2 flex items-center'>
+        <input
+          className='w-full h-full focus:border-rwa focus:ring-rwa focus:outline-none'
+          {...props}
+        />
+        <Icon className='pointer-events-none h-6 w-6 text-rwa' />
+      </div>
     </label>
-  );
+  )
 }
 
 function NavButton({ children, variant = 'solid', ...props }: NavButtonProps) {
-  const base = 'rounded-md px-5 py-2 text-sm font-semibold transition';
+  const base =
+    'rounded-3xl px-8 py-4 text-sm font-semibold transition cursor-pointer'
   const styles =
     variant === 'solid'
       ? 'bg-rwa text-white hover:bg-rwa/90'
-      : 'text-gray-500 hover:text-rwa';
+      : 'text-gray-500 hover:text-rwa border border-rwa'
   return (
     <button className={`${base} ${styles}`} {...props}>
       {children}
     </button>
-  );
+  )
 }
 
 function SelectCard({ active, onClick, icon: Icon, label }: SelectCardProps) {
@@ -266,16 +272,22 @@ function SelectCard({ active, onClick, icon: Icon, label }: SelectCardProps) {
     <button
       type='button'
       onClick={onClick}
-      className={`flex items-center gap-3 rounded-md border bg-white p-4 text-left shadow-sm transition ${
-        active ? 'border-rwa bg-rwa/10' : 'border-gray-200 hover:border-rwa'
+      className={`flex items-center gap-3 rounded-md border p-4 text-left shadow-sm transition ${
+        active
+          ? 'bg-rwa text-white'
+          : 'border-gray-200 hover:border-rwa bg-white'
       }`}
     >
-      <div className='flex h-10 w-10 items-center justify-center rounded-full bg-rwa/20 text-rwa'>
+      <div
+        className={`flex h-10 w-10 items-center justify-center rounded-full text-rwa ${
+          active ? 'bg-white' : 'bg-rwa/20'
+        }`}
+      >
         <Icon className='h-5 w-5' />
       </div>
       <span className='text-sm font-medium'>{label}</span>
     </button>
-  );
+  )
 }
 
 function ExecCard({ exec, active, onClick }: ExecCardProps) {
@@ -298,10 +310,10 @@ function ExecCard({ exec, active, onClick }: ExecCardProps) {
           <FiUser className='h-10 w-10' />
         </div>
       )}
-      <span className='text-sm font-semibold'>{exec.name}</span>
-      <span className='rounded-lg bg-rwa px-2 py-0.5 text-xs text-white'>
+      <span className='text-lg font-semibold'>{exec.name}</span>
+      <span className='rounded-lg bg-rwa px-2 py-0.5 text-white w-full'>
         {exec.role}
       </span>
     </button>
-  );
+  )
 }
