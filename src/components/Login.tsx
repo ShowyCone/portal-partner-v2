@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react'
 import { motion } from 'framer-motion'
-import LoginForm from '../forms/LoginForm'
+import LoginForm from './forms/LoginForm'
 
 const slideIn = (direction = 'left') => ({
   hidden: {

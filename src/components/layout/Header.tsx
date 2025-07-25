@@ -58,7 +58,7 @@ const Header: React.FC = () => {
             </Link>
 
             <Link
-              href='/login'
+              href='/signup'
               className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'
             >
               Sign Up
