@@ -1,10 +1,11 @@
+'use client'
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import LoginForm from '../forms/LoginForm'
 import Stepper from '../steper/Stepper'
 import ProviderFormSteps from '../forms/ProviderFormSteps'
 import Success from '../Success'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 interface LogoSliderRowProps {
   reverse?: boolean

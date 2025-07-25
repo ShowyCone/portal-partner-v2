@@ -1,7 +1,7 @@
-// @ts-nocheck
 'use client'
 import React from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 const BannerSection = () => {
   return (
@@ -34,12 +34,12 @@ const BannerSection = () => {
         </h2>
 
         {/* CTA */}
-        <a
-          href='#apply'
+        <Link
+          href='/provider/apply'
           className='inline-block px-16 py-3 bg-white text-rwa rounded-md font-semibold hover:bg-white/80 transition'
         >
           Apply Now
-        </a>
+        </Link>
       </motion.div>
     </section>
   )

@@ -1,5 +1,6 @@
 import { FaFacebookF, FaTwitter, FaInstagram, FaPinterestP } from 'react-icons/fa'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Footer: React.FC = () => {
   return (
@@ -49,7 +50,9 @@ const Footer: React.FC = () => {
         </div>
         <div className="space-y-4">
           <h3 className="text-rwa font-semibold">Partners</h3>
-          <p className="hover:text-gray-300 cursor-pointer">Be a provider, apply now</p>
+          <Link href="/provider/apply" className="hover:text-gray-300 cursor-pointer block">
+            Be a provider, apply now
+          </Link>
           <p className="hover:text-gray-300 cursor-pointer">List of Partners</p>
           <p className="hover:text-gray-300 cursor-pointer">Find a Partner</p>
         </div>
