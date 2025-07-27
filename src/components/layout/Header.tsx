@@ -7,6 +7,7 @@ import { FaUserCircle, FaAngleDown } from 'react-icons/fa'
 
 const Header: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false)
+  const [menuOpen, setMenuOpen] = useState<boolean>(false) // State for mobile menu
 
   useEffect(() => {
     const handler = () => {
@@ -25,12 +26,12 @@ const Header: React.FC = () => {
 
   return (
     <motion.header
-      className='w-full min-h-20 px-6 flex justify-between items-center border-b-1 border-black/10'
+      className='w-full min-h-20 px-6 flex justify-between items-center border-b-1 border-black/10 md:px-10 lg:px-16 relative'
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      <div className='flex items-center space-x-8'>
+      <div className='flex items-center justify-between w-full md:w-auto'>
         <Link href='/' passHref>
           <img
             src='/rwamainlogo.svg'
@@ -39,13 +40,36 @@ const Header: React.FC = () => {
           />
         </Link>
 
-        <nav className='flex items-center space-x-6'>
-          <NavItem href='/' label='Home' />
-          <NavItem href='/discover' label='Discover' />
-        </nav>
+        {/* Mobile menu toggle */}
+        <button
+          className='md:hidden text-gray-700 hover:text-rwa focus:outline-none'
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <FaAngleDown size={24} />
+        </button>
       </div>
 
-      <div className='flex items-center space-x-4'>
+      {/* Navigation for larger screens */}
+      <nav className='hidden md:flex items-center space-x-6'>
+        <NavItem href='/' label='Home' />
+        <NavItem href='/discover' label='Discover' />
+      </nav>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <motion.nav
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+          className='absolute top-20 left-0 w-full bg-white shadow-md z-50 flex flex-col items-start p-4 space-y-4 md:hidden'
+        >
+          <NavItem href='/' label='Home' />
+          <NavItem href='/discover' label='Discover' />
+        </motion.nav>
+      )}
+
+      <div className='hidden md:flex items-center space-x-4'>
         {logged ? (
           <AddressIndicator />
         ) : (

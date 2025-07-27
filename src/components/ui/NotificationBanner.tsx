@@ -26,26 +26,25 @@ const NotificationBanner: React.FC = () => {
           exit='exit'
           variants={bannerVariants}
           transition={{ duration: 0.5, ease: 'easeInOut' }}
-          className='relative w-full text-blue-950 border-b-1 border-black/10'
+          className='relative w-full bg-blue-600 text-white z-50'
         >
-          <div className='container mx-auto flex items-center justify-center px-4 py-4 text-center md:px-6'>
-            <p className='text-[1rem]'>
+          <div className='container mx-auto flex items-center justify-between px-4 py-2 text-center md:px-6'>
+            <p className='text-sm md:text-base flex-1'>
               <span role='img' aria-label='bell-icon' className='mr-2'>
                 🔔
               </span>
-              Are you a service provider? Join our verified partner network to
-              list your services and reach global clients.{' '}
+              Service provider? Join our network!{' '}
               <a
                 href='#'
-                className='font-semibold text-blue-600 underline hover:text-blue-700'
+                className='font-semibold underline hover:text-blue-300'
                 onClick={(e) => e.preventDefault()}
               >
-                Apply Now!
+                Apply Now
               </a>
             </p>
             <button
               onClick={handleClose}
-              className='absolute right-4 top-1/2 -translate-y-1/2 p-1 text-gray-600 hover:text-gray-900 '
+              className='p-1 text-white hover:text-gray-200'
               aria-label='Close notification'
             >
               <FiX className='h-5 w-5' />
