@@ -4,7 +4,7 @@ import { FaCloudUploadAlt, FaTimes, FaCheck } from 'react-icons/fa'
 import { AiOutlineCheck } from 'react-icons/ai'
 import { useRouter } from 'next/navigation'
 
-// "Go to Dashboard" button in 696
+// "Go to Dashboard" button in 700
 
 const CATEGORIES = [
   'Smart Contract Dev',
@@ -718,7 +718,7 @@ export default function CreateServiceForm() {
       <div className='absolute top-1/2 left-1/4 w-6 h-6 md:w-12 md:h-12 bg-rwa/30 rounded-full opacity-30' />
       <div className='absolute bottom-1/4 right-1/3 w-10 h-10 md:w-20 md:h-20 bg-rwa/50 rounded-full opacity-35' />
       <div className='absolute top-20 left-1/2 transform -translate-x-1/2 w-14 h-14 md:w-28 md:h-28 bg-rwa/25 rounded-full opacity-25' />
-      
+
       <motion.form
         onSubmit={handleSubmit}
         variants={fadeVariants}
