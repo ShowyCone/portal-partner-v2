@@ -71,7 +71,7 @@ const ServiceCard: React.FC<Props> = ({
       variants={cardVariants}
       onClick={handleCardClick}
     >
-      <div className='relative h-48 rounded-t-lg overflow-hidden'>
+      <div className='relative h-40 sm:h-48 rounded-t-lg overflow-hidden'>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={service.image}
@@ -84,22 +84,22 @@ const ServiceCard: React.FC<Props> = ({
             e.stopPropagation()
             setIsFavorite((prev) => !prev)
           }}
-          className={`absolute cursor-pointer top-0 right-0 z-10 backdrop-blur-3xl bg-black/20 group active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)] rounded-bl-lg p-3 ${
+          className={`absolute cursor-pointer top-0 right-0 z-10 backdrop-blur-3xl bg-black/20 group active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)] rounded-bl-lg p-2 sm:p-3 ${
             isFavorite ? 'text-rwa' : 'text-white'
           }`}
           aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         >
           <FaRegHeart
             className='group-hover:scale-125 transition-all duration-300'
-            size={22}
+            size={18}
           />
         </button>
       </div>
 
-      <div className='p-4 flex flex-col flex-grow text-gray-800'>
+      <div className='p-3 sm:p-4 flex flex-col flex-grow text-gray-800'>
         <div className='flex justify-between items-start gap-2'>
           <div className='relative group flex-1 min-w-0'>
-            <h3 className='font-bold text-base text-rwa truncate'>
+            <h3 className='font-bold text-sm sm:text-base text-rwa truncate'>
               {service.title}
             </h3>
             <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-xs bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-10'>
@@ -109,8 +109,8 @@ const ServiceCard: React.FC<Props> = ({
           </div>
 
           <div className='flex items-center gap-1 flex-shrink-0'>
-            <FaStar className='text-rwa text-lg' />
-            <span className='text-lg'>{service.rating.toFixed(1)}</span>
+            <FaStar className='text-rwa text-sm sm:text-lg' />
+            <span className='text-sm sm:text-lg'>{service.rating.toFixed(1)}</span>
           </div>
         </div>
 
@@ -121,16 +121,16 @@ const ServiceCard: React.FC<Props> = ({
               : 'flex items-center gap-2 mt-2'
           }
         >
-          <p className='font-bold text-gray-900 text-base'>${service.price}</p>
+          <p className='font-bold text-gray-900 text-sm sm:text-base'>${service.price}</p>
           <span className='bg-rwa/10 text-rwa text-xs font-semibold px-2 py-0.5 rounded-full'>
             {service.tag}
           </span>
         </div>
 
         {!isSuggested && (
-          <div className='mt-3 flex-grow'>
+          <div className='mt-2 sm:mt-3 flex-grow'>
             <div className='relative group w-fit'>
-              <p className='text-gray-600 text-sm line-clamp-2'>
+              <p className='text-gray-600 text-xs sm:text-sm line-clamp-2'>
                 {service.description}
               </p>
               <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-sm bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-20'>
@@ -142,18 +142,18 @@ const ServiceCard: React.FC<Props> = ({
         )}
 
         {!isSuggested && (
-          <div className='border-t border-gray-200 mt-4 pt-3 flex justify-between items-center text-sm text-gray-500'>
+          <div className='border-t border-gray-200 mt-3 sm:mt-4 pt-2 sm:pt-3 flex justify-between items-center text-xs sm:text-sm text-gray-500'>
             {partner ? (
               <button
                 onClick={handlePartnerClick}
-                className='hover:underline hover:text-rwa text-left'
+                className='hover:underline hover:text-rwa text-left truncate'
               >
                 {partnerName}
               </button>
             ) : (
-              <span>{partnerName}</span>
+              <span className="truncate">{partnerName}</span>
             )}
-            <span>{service.reviews ?? 0} reviews</span>
+            <span className="whitespace-nowrap">{service.reviews ?? 0} reviews</span>
           </div>
         )}
       </div>

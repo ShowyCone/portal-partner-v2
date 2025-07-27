@@ -181,28 +181,28 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
       variants={fadeInUp}
       initial='hidden'
       animate='visible'
-      className='max-w-7xl mx-auto py-8'
+      className='max-w-7xl mx-auto py-4 sm:py-6 md:py-8 px-4'
     >
       {/* Header section */}
       <motion.div
         variants={fadeInUp}
         custom={1}
-        className='flex justify-between items-start'
+        className='flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0'
       >
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-3 sm:gap-4'>
           <img
             src={logo}
             alt={name}
-            className='h-12 w-12 sm:h-16 sm:w-16 object-contain'
+            className='h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 object-contain'
           />
-          <h1 className='text-xl sm:text-2xl font-semibold'>{name}</h1>
+          <h1 className='text-lg sm:text-xl md:text-2xl font-semibold'>{name}</h1>
         </div>
-        <div className='flex gap-3'>
+        <div className='flex gap-2 sm:gap-3'>
           <button className='border border-rwa text-rwa rounded-xl p-2 hover:bg-gray-50 transition-all hover:scale-105'>
-            <FaGlobe className='text-lg' />
+            <FaGlobe className='text-sm sm:text-base md:text-lg' />
           </button>
           <button className='border border-gray-300 text-gray-400 rounded-xl p-2 hover:bg-gray-50 transition-all hover:scale-105'>
-            <FaExclamationTriangle className='text-lg' />
+            <FaExclamationTriangle className='text-sm sm:text-base md:text-lg' />
           </button>
         </div>
       </motion.div>
@@ -211,7 +211,7 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
       <motion.p
         variants={fadeInUp}
         custom={2}
-        className='text-sm sm:text-base text-gray-700 mt-2  max-w-1/2'
+        className='text-sm sm:text-base text-gray-700 mt-2 max-w-full lg:max-w-1/2'
       >
         {description}
       </motion.p>
@@ -220,12 +220,12 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
       <motion.div
         variants={fadeInUp}
         custom={3}
-        className='flex flex-wrap gap-2 mt-4'
+        className='flex flex-wrap gap-1.5 sm:gap-2 mt-3 sm:mt-4'
       >
         {computedTags.map((tag, i) => (
           <span
             key={i}
-            className='text-xs sm:text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded-full shadow-sm cursor-default'
+            className='text-xs sm:text-sm bg-gray-100 text-gray-700 px-2 sm:px-3 py-1 rounded-full shadow-sm cursor-default'
           >
             {tag}
           </span>
@@ -236,7 +236,7 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
       <motion.div
         variants={fadeInUp}
         custom={4}
-        className='flex flex-col lg:flex-row justify-between gap-8 mt-6 lg:items-stretch'
+        className='flex flex-col lg:flex-row justify-between gap-6 sm:gap-8 mt-4 sm:mt-6 lg:items-stretch'
       >
         {/* Media Carousel */}
         <div className='relative w-full lg:w-[55%]'>
@@ -264,7 +264,7 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
                 )}
 
                 {/* Video controls */}
-                <div className='absolute bottom-0 left-0 right-0 bg-black/60 px-4 py-3 flex items-center gap-4 text-white text-xs'>
+                <div className='absolute bottom-0 left-0 right-0 bg-black/60 px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-4 text-white text-xs'>
                   {/* Play/Pause */}
                   <button
                     onClick={togglePlay}
@@ -286,7 +286,7 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
                   <button
                     onClick={toggleMute}
                     aria-label='Mute'
-                    className='hover:scale-105 transition-transform'
+                    className='hover:scale-105 transition-transform hidden sm:block'
                   >
                     {isMuted || volume === 0 ? (
                       <FaVolumeMute />
@@ -301,7 +301,7 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
                     step='0.01'
                     value={volume}
                     onChange={handleVolumeChange}
-                    className='w-24 accent-rwa cursor-pointer h-1 bg-gray-300 rounded-lg'
+                    className='w-16 sm:w-24 accent-rwa cursor-pointer h-1 bg-gray-300 rounded-lg hidden sm:block'
                   />
                   {/* Fullscreen */}
                   <button
@@ -324,17 +324,17 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
             {/* Navigation arrows */}
             <button
               onClick={() => changeIndex(false)}
-              className='absolute top-1/2 -translate-y-1/2 left-3 z-10 bg-white/80 backdrop-blur rounded-full p-2 shadow hover:scale-105 transition-transform'
+              className='absolute top-1/2 -translate-y-1/2 left-2 sm:left-3 z-10 bg-white/80 backdrop-blur rounded-full p-1.5 sm:p-2 shadow hover:scale-105 transition-transform'
               aria-label='Previous media'
             >
-              <FaChevronLeft />
+              <FaChevronLeft className='text-xs sm:text-sm' />
             </button>
             <button
               onClick={() => changeIndex(true)}
-              className='absolute top-1/2 -translate-y-1/2 right-3 z-10 bg-white/80 backdrop-blur rounded-full p-2 shadow hover:scale-105 transition-transform'
+              className='absolute top-1/2 -translate-y-1/2 right-2 sm:right-3 z-10 bg-white/80 backdrop-blur rounded-full p-1.5 sm:p-2 shadow hover:scale-105 transition-transform'
               aria-label='Next media'
             >
-              <FaChevronRight />
+              <FaChevronRight className='text-xs sm:text-sm' />
             </button>
           </div>
 
@@ -346,11 +346,11 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
               className='absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur rounded-full p-1 shadow hover:scale-105 transition-transform'
               aria-label='Scroll left'
             >
-              <FaChevronLeft />
+              <FaChevronLeft className='text-xs' />
             </button>
             <div
               ref={thumbContainerRef}
-              className='flex gap-2 overflow-x-auto pt-4 pb-2 px-6 scrollbar-hide'
+              className='flex gap-1.5 sm:gap-2 overflow-x-auto pt-3 sm:pt-4 pb-2 px-4 sm:px-6 scrollbar-hide'
             >
               {computedMedia.map((m, i) => (
                 <img
@@ -358,9 +358,9 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
                   src={m.type === 'video' ? m.thumbnail || m.src : m.src}
                   alt={`thumb-${i}`}
                   onClick={() => setCurrentIndex(i)}
-                  className={`w-24 h-16 rounded-md object-cover cursor-pointer border ${
+                  className={`w-16 h-10 sm:w-20 sm:h-12 md:w-24 md:h-16 rounded-md object-cover cursor-pointer border ${
                     i === currentIndex ? 'border-rwa' : 'border-gray-300'
-                  } hover:border-rwa transition`}
+                  } hover:border-rwa transition flex-shrink-0`}
                 />
               ))}
             </div>
@@ -369,62 +369,62 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
               className='absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur rounded-full p-1 shadow hover:scale-105 transition-transform'
               aria-label='Scroll right'
             >
-              <FaChevronRight />
+              <FaChevronRight className='text-xs' />
             </button>
           </div>
         </div>
 
         {/* Stats */}
-        <div className='flex flex-col justify-between w-[35%]'>
-          <div className='flex flex-col gap-4'>
+        <div className='flex flex-col justify-between w-full lg:w-[35%] gap-4 lg:gap-0'>
+          <div className='flex flex-row lg:flex-col gap-4 lg:gap-4 justify-around lg:justify-start'>
             {/* Closed Deals */}
-            <div>
-              <p className='text-3xl sm:text-4xl font-bold text-rwa'>
+            <div className='text-center lg:text-left'>
+              <p className='text-2xl sm:text-3xl md:text-4xl font-bold text-rwa'>
                 +{computedStats.closedClients}
               </p>
-              <p className='text-sm text-gray-500 uppercase tracking-wide'>
+              <p className='text-xs sm:text-sm text-gray-500 uppercase tracking-wide'>
                 Closed Deals
               </p>
             </div>
-            <div className='h-px bg-gray-200 my-1' />
+            <div className='h-px bg-gray-200 my-1 hidden lg:block' />
 
             {/* Rated */}
-            <div>
-              <div className='flex items-center gap-1'>
-                <FaStar className='text-rwa text-3xl' />
-                <p className='text-3xl sm:text-4xl font-bold text-rwa'>
+            <div className='text-center lg:text-left'>
+              <div className='flex items-center gap-1 justify-center lg:justify-start'>
+                <FaStar className='text-rwa text-2xl sm:text-3xl' />
+                <p className='text-2xl sm:text-3xl md:text-4xl font-bold text-rwa'>
                   {computedStats.rating}
                 </p>
               </div>
-              <p className='text-sm text-gray-500 uppercase tracking-wide'>
+              <p className='text-xs sm:text-sm text-gray-500 uppercase tracking-wide'>
                 ({computedStats.ratingCount}) Reviews
               </p>
             </div>
-            <div className='h-px bg-gray-200 my-1' />
+            <div className='h-px bg-gray-200 my-1 hidden lg:block' />
             {/* Services */}
-            <div>
-              <p className='text-3xl sm:text-4xl font-bold text-rwa'>
+            <div className='text-center lg:text-left'>
+              <p className='text-2xl sm:text-3xl md:text-4xl font-bold text-rwa'>
                 {computedStats.services}
               </p>
-              <p className='text-sm text-gray-500 uppercase tracking-wide'>
+              <p className='text-xs sm:text-sm text-gray-500 uppercase tracking-wide'>
                 Crypto Services
               </p>
             </div>
           </div>
 
           {/* Button */}
-          <button className='self-start rounded-3xl border-4 border-rwa text-rwa w-full px-6 py-2 font-medium shadow hover:opacity-90 hover:scale-105 transition-all cursor-pointer'>
+          <button className='self-stretch lg:self-start rounded-3xl border-4 border-rwa text-rwa w-full px-4 sm:px-6 py-2 sm:py-3 font-medium shadow hover:opacity-90 hover:scale-105 transition-all cursor-pointer text-sm sm:text-base'>
             View all services
           </button>
         </div>
       </motion.div>
 
       {/* Introduction Section */}
-      <motion.div variants={fadeInUp} custom={5} className='mt-12'>
-        <h2 className='text-2xl sm:text-3xl font-semibold text-gray-900'>
+      <motion.div variants={fadeInUp} custom={5} className='mt-8 sm:mt-10 md:mt-12'>
+        <h2 className='text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900'>
           {name} <span className='text-rwa'>Introduction</span>
         </h2>
-        <p className='text-base sm:text-lg text-gray-700 leading-relaxed mt-4'>
+        <p className='text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed mt-3 sm:mt-4'>
           {introductionText}
         </p>
       </motion.div>

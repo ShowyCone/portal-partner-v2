@@ -14,7 +14,7 @@ const slideIn = (direction = 'left') => ({
 })
 
 const inputClasses =
-  'w-full px-4 py-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-rwa'
+  'w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl text-sm sm:text-base focus:outline-none focus:border-rwa'
 
 const interestOptions = [
   'Blockchain',
@@ -85,14 +85,14 @@ export default function SignUp() {
               if (credentialsValid) handleNext()
             }}
           >
-            <h2 className='text-xl md:text-2xl font-semibold text-center text-rwa'>
+            <h2 className='text-lg sm:text-xl md:text-2xl font-semibold text-center text-rwa'>
               Sign up
             </h2>
 
             <div className='flex flex-col gap-2'>
               <label
                 htmlFor='email'
-                className='text-sm font-medium text-gray-500'
+                className='text-xs sm:text-sm font-medium text-gray-500'
               >
                 Email
               </label>
@@ -158,7 +158,7 @@ export default function SignUp() {
                 }
                 className='accent-rwa w-4 h-4'
               />
-              <span className='text-sm'>
+              <span className='text-xs sm:text-sm'>
                 I accept the terms and privacy policy
               </span>
             </label>
@@ -166,7 +166,7 @@ export default function SignUp() {
             <button
               type='submit'
               disabled={!credentialsValid}
-              className='self-end px-6 py-3 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity disabled:opacity-40'
+              className='self-end px-4 sm:px-6 py-2 sm:py-3 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity disabled:opacity-40 text-sm sm:text-base'
             >
               Next step
             </button>
@@ -260,18 +260,18 @@ export default function SignUp() {
               </select>
             </div>
 
-            <div className='flex justify-between mt-4'>
+            <div className='flex flex-col sm:flex-row justify-between gap-3 sm:gap-0 mt-4'>
               <button
                 type='button'
                 onClick={handleBack}
-                className='px-6 py-1.5 border-2 border-rwa text-rwa font-semibold rounded hover:bg-rwa hover:text-white transition-colors'
+                className='px-4 sm:px-6 py-2 sm:py-1.5 border-2 border-rwa text-rwa font-semibold rounded hover:bg-rwa hover:text-white transition-colors text-sm sm:text-base'
               >
                 Go back
               </button>
               <button
                 type='button'
                 onClick={handleNext}
-                className='px-6 py-1.5 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity'
+                className='px-4 sm:px-6 py-2 sm:py-1.5 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity text-sm sm:text-base'
               >
                 Next step
               </button>
@@ -287,16 +287,16 @@ export default function SignUp() {
             className='flex flex-col gap-6 w-full max-w-md'
           >
             <div className='text-center space-y-2'>
-              <h2 className='text-xl md:text-2xl font-semibold text-rwa'>
+              <h2 className='text-lg sm:text-xl md:text-2xl font-semibold text-rwa'>
                 Please check your email
               </h2>
-              <p className='text-sm text-gray-600'>
+              <p className='text-xs sm:text-sm text-gray-600'>
                 We&apos;ve sent a code to{' '}
                 <span className='font-medium'>{form.email}</span>
               </p>
             </div>
 
-            <div className='flex justify-center gap-3'>
+            <div className='flex justify-center gap-2 sm:gap-3'>
               {code.map((d, i) => (
                 <input
                   key={i}
@@ -305,7 +305,7 @@ export default function SignUp() {
                   value={d}
                   maxLength={1}
                   onChange={(e) => handleCode(i, e.target.value)}
-                  className='w-12 h-16 border-2 border-gray-200 rounded-xl text-center text-2xl focus:outline-none focus:border-rwa'
+                  className='w-10 h-12 sm:w-12 sm:h-16 border-2 border-gray-200 rounded-xl text-center text-xl sm:text-2xl focus:outline-none focus:border-rwa'
                 />
               ))}
             </div>
@@ -313,12 +313,12 @@ export default function SignUp() {
             <button
               type='button'
               onClick={handleNext}
-              className='w-full py-3 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity'
+              className='w-full py-2 sm:py-3 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity text-sm sm:text-base'
             >
               Verify
             </button>
 
-            <p className='text-center text-sm text-gray-600'>
+            <p className='text-center text-xs sm:text-sm text-gray-600'>
               I didn&apos;t receive a code{' '}
               <button
                 type='button'
@@ -336,19 +336,19 @@ export default function SignUp() {
             variants={slideIn('right')}
             initial='hidden'
             animate='visible'
-            className='flex flex-col gap-6 w-full max-w-md text-center'
+            className='flex flex-col gap-4 sm:gap-6 w-full max-w-md text-center'
           >
-            <LuSparkles className='text-rwa mx-auto' size={80} />
-            <h2 className='text-2xl font-semibold text-rwa'>
+            <LuSparkles className='text-rwa mx-auto' size={60} />
+            <h2 className='text-lg sm:text-xl md:text-2xl font-semibold text-rwa'>
               Register successfully!
             </h2>
-            <p className='text-sm text-gray-600'>
+            <p className='text-xs sm:text-sm text-gray-600'>
               Welcome to the RWA Inc Service platform, your account is ready to
               explore all our services!
             </p>
             <Link
               to='/discover'
-              className='w-full py-3 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity'
+              className='w-full py-2 sm:py-3 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity text-sm sm:text-base'
             >
               Explore services!
             </Link>
@@ -360,16 +360,16 @@ export default function SignUp() {
   }
 
   return (
-    <section className='flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] gap-8 p-6 bg-white'>
-      <div className='w-full max-w-md bg-white p-8 border border-gray-200 rounded-2xl shadow-lg'>
+    <section className='flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] gap-6 sm:gap-8 p-4 sm:p-6 bg-white'>
+      <div className='w-full max-w-md bg-white p-4 sm:p-6 md:p-8 border border-gray-200 rounded-2xl shadow-lg'>
         <img
           src='/rwamainlogo.svg'
           alt='RWA Logo'
-          className='h-12 mx-auto mb-4'
+          className='h-10 sm:h-12 mx-auto mb-3 sm:mb-4'
         />
         {renderStep()}
         {step !== 3 && (
-          <p className='mt-4 text-center text-sm text-gray-600'>
+          <p className='mt-4 text-center text-xs sm:text-sm text-gray-600'>
             Already have account?{' '}
             <Link to='/login' className='text-rwa underline'>
               Login

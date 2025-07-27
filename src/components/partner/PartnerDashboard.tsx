@@ -44,14 +44,14 @@ const PartnerDashboard = ({
 
   if (!partner) {
     return (
-      <section className='container mx-auto px-4 py-12'>
-        <p className='text-center text-gray-600'>
+      <section className='container mx-auto px-4 py-8 sm:py-12'>
+        <p className='text-center text-gray-600 text-sm sm:text-base'>
           Partner not found: {partnerId}
         </p>
         <div className='mt-4 text-center text-sm text-gray-500'>
           <Link
             href={'/partners'}
-            className='bg-rwa px-5 py-1 rounded-2xl text-white text-xl'
+            className='bg-rwa px-4 sm:px-5 py-2 sm:py-1 rounded-2xl text-white text-base sm:text-xl inline-block'
           >
             Go to all partners
           </Link>
@@ -78,13 +78,13 @@ const PartnerDashboard = ({
   const uniqueTags = [...new Set(partnerServices.map((s) => s.tag))].slice(0, 3)
 
   return (
-    <section className='container mx-auto px-4 py-12'>
-      <div className='flex items-center gap-2 text-sm text-gray-500'>
-        <FaHome />
+    <section className='container mx-auto px-4 py-6 sm:py-8 md:py-12'>
+      <div className='flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-500'>
+        <FaHome className='text-xs sm:text-sm' />
         <span>/</span>
         <span>partners</span>
         <span>/</span>
-        <span className='text-rwa'>{partner.name}</span>
+        <span className='text-rwa truncate'>{partner.name}</span>
       </div>
 
       <PartnerProfile partner={partnerProfileData} />

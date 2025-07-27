@@ -28,9 +28,9 @@ const NotificationBanner: React.FC = () => {
           transition={{ duration: 0.5, ease: 'easeInOut' }}
           className='relative w-full bg-blue-600 text-white z-50'
         >
-          <div className='container mx-auto flex items-center justify-between px-4 py-2 text-center md:px-6'>
-            <p className='text-sm md:text-base flex-1'>
-              <span role='img' aria-label='bell-icon' className='mr-2'>
+          <div className='container mx-auto flex items-center justify-between px-3 sm:px-4 md:px-6 py-2 text-center'>
+            <p className='text-xs sm:text-sm md:text-base flex-1 pr-2'>
+              <span role='img' aria-label='bell-icon' className='mr-1 sm:mr-2'>
                 🔔
               </span>
               Service provider? Join our network!{' '}
@@ -44,10 +44,10 @@ const NotificationBanner: React.FC = () => {
             </p>
             <button
               onClick={handleClose}
-              className='p-1 text-white hover:text-gray-200'
+              className='p-1 text-white hover:text-gray-200 flex-shrink-0'
               aria-label='Close notification'
             >
-              <FiX className='h-5 w-5' />
+              <FiX className='h-4 w-4 sm:h-5 sm:w-5' />
             </button>
           </div>
         </motion.div>

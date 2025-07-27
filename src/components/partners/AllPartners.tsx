@@ -51,9 +51,9 @@ const AllPartners = () => {
   useEffect(() => setCurrentPage(1), [itemsPerPage])
 
   return (
-    <section className='pb-15 px-4 md:px-10 max-w-screen-xl mx-auto overflow-hidden'>
+    <section className='pb-10 sm:pb-15 px-4 md:px-10 max-w-screen-xl mx-auto overflow-hidden'>
       <motion.div
-        className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
+        className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'
         initial='hidden'
         animate='visible'
         variants={{
@@ -76,13 +76,13 @@ const AllPartners = () => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className='mt-12 flex items-center justify-center gap-3'>
+        <div className='mt-8 sm:mt-12 flex items-center justify-center gap-2 sm:gap-3'>
           {/* Prev */}
           <div
             onClick={() => currentPage > 1 && setCurrentPage((p) => p - 1)}
-            className='cursor-pointer rounded-full border border-gray-400 p-2 text-gray-800 transition-colors hover:border-rwa hover:text-rwa'
+            className='cursor-pointer rounded-full border border-gray-400 p-1.5 sm:p-2 text-gray-800 transition-colors hover:border-rwa hover:text-rwa'
           >
-            <FaChevronLeft />
+            <FaChevronLeft className='text-sm sm:text-base' />
           </div>
 
           {Array.from({ length: totalPages }).map((_, i) => {
@@ -91,11 +91,11 @@ const AllPartners = () => {
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={
+                className={`text-sm sm:text-base px-2 py-1 ${
                   page === currentPage
                     ? 'font-semibold text-rwa underline underline-offset-4'
                     : 'text-gray-800 transition-colors hover:text-rwa'
-                }
+                }`}
               >
                 {page}
               </button>
@@ -107,9 +107,9 @@ const AllPartners = () => {
             onClick={() =>
               currentPage < totalPages && setCurrentPage((p) => p + 1)
             }
-            className='cursor-pointer rounded-full border border-gray-400 p-2 text-gray-800 transition-colors hover:border-rwa hover:text-rwa'
+            className='cursor-pointer rounded-full border border-gray-400 p-1.5 sm:p-2 text-gray-800 transition-colors hover:border-rwa hover:text-rwa'
           >
-            <FaChevronRight />
+            <FaChevronRight className='text-sm sm:text-base' />
           </div>
         </div>
       )}
