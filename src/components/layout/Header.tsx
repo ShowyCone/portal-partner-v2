@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { FaUserCircle, FaAngleDown } from 'react-icons/fa'
+import { FaUserCircle, FaAngleDown, FaTimes } from 'react-icons/fa'
 
 const Header: React.FC = () => {
   const [logged, setLogged] = useState<boolean>(false)
@@ -26,27 +26,48 @@ const Header: React.FC = () => {
 
   return (
     <motion.header
-      className='w-full min-h-20 px-6 flex justify-between items-center border-b-1 border-black/10 md:px-10 lg:px-16 relative'
+      className='w-full min-h-20 px-6 flex justify-between items-center border-b-1 border-black/10 md:px-10 lg:px-16 relative bg-gradient-to-r from-blue-50 to-blue-100 shadow-sm'
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
+      whileHover={{ scale: 1.01 }}
     >
       <div className='flex items-center justify-between w-full md:w-auto'>
         <Link href='/' passHref>
-          <img
+          <motion.img
             src='/rwamainlogo.svg'
             alt='Logo'
             className='h-8 object-contain'
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
           />
         </Link>
 
         {/* Mobile menu toggle */}
-        <button
-          className='md:hidden text-gray-700 hover:text-rwa focus:outline-none'
+        <motion.button
+          className='md:hidden text-gray-700 hover:text-rwa focus:outline-none flex flex-col justify-center items-center relative w-8 h-8'
           onClick={() => setMenuOpen(!menuOpen)}
+          whileTap={{ scale: 0.9 }}
         >
-          <FaAngleDown size={24} />
-        </button>
+          <motion.span
+            className='absolute w-6 h-0.5 bg-gray-700 rounded'
+            initial={{ rotate: 0, y: -6 }}
+            animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 0 : -6 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          />
+          <motion.span
+            className='absolute w-6 h-0.5 bg-gray-700 rounded'
+            initial={{ opacity: 1 }}
+            animate={{ opacity: menuOpen ? 0 : 1 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          />
+          <motion.span
+            className='absolute w-6 h-0.5 bg-gray-700 rounded'
+            initial={{ rotate: 0, y: 6 }}
+            animate={{ rotate: menuOpen ? -45 : 0, y: menuOpen ? 0 : 6 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          />
+        </motion.button>
       </div>
 
       {/* Navigation for larger screens */}
@@ -74,19 +95,23 @@ const Header: React.FC = () => {
           <AddressIndicator />
         ) : (
           <>
-            <Link
-              href='/login'
-              className='text-gray-700 hover:text-rwa cursor-pointer transition-colors duration-200 font-medium'
-            >
-              Sign In
-            </Link>
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Link
+                href='/login'
+                className='text-gray-700 hover:text-rwa cursor-pointer transition-colors duration-200 font-medium'
+              >
+                Sign In
+              </Link>
+            </motion.div>
 
-            <Link
-              href='/signup'
-              className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'
-            >
-              Sign Up
-            </Link>
+            <motion.div whileHover={{ scale: 1.05 }}>
+              <Link
+                href='/signup'
+                className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'
+              >
+                Sign Up
+              </Link>
+            </motion.div>
           </>
         )}
       </div>
