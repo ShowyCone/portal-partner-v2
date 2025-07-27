@@ -3,6 +3,9 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FaSearch } from 'react-icons/fa'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay } from 'swiper/modules'
+import 'swiper/css'
 
 const categories = [
   'Discover',
@@ -39,7 +42,7 @@ const Hero = () => {
   const [activeCategory, setActiveCategory] = useState(categories[0])
 
   return (
-    <section className='relative flex items-center justify-center w-full min-h-[90vh] text-white overflow-hidden'>
+    <section className='relative flex items-center justify-center w-full min-h-[90vh] text-white overflow-hidden px-4 md:px-8'>
       <div className='absolute inset-0 z-[-2]'>
         <img
           src='/video_still.webp'
@@ -49,31 +52,66 @@ const Hero = () => {
       </div>
       <div className='absolute inset-0 bg-black/30 z-[-1]'></div>
 
-      <div className='container z-10 flex flex-col items-center justify-center w-full max-w-screen-xl gap-6 px-4 text-center'>
-        {/* Luego sera un swiper para mobile */}
+      <div className='container z-10 flex flex-col items-center justify-center w-full max-w-screen-xl gap-6 text-center'>
+        {/* Swiper for mobile */}
         <motion.div
-          className='flex flex-wrap items-center justify-center gap-4'
+          className='w-full'
           initial='initial'
           animate='animate'
           variants={{
             animate: { transition: { staggerChildren: 0.05 } },
           }}
         >
-          {categories.map((category) => (
-            <motion.button
-              key={category}
-              custom={1}
-              variants={fadeInAnimation}
-              onClick={() => setActiveCategory(category)}
-              className={`px-5 py-2 text-lg rounded-3xl cursor-pointer transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-none ${
-                activeCategory === category
-                  ? 'bg-rwa'
-                  : 'bg-rwa/20 hover:bg-rwa/50'
-              }`}
-            >
-              {category}
-            </motion.button>
-          ))}
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={'auto'}
+            loop={true}
+            autoplay={{
+              delay: 0,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            speed={4000}
+            allowTouchMove={true}
+            modules={[Autoplay]}
+            className='flex md:hidden'
+          >
+            {categories.map((category) => (
+              <SwiperSlide key={category} className='!w-auto'>
+                <motion.button
+                  custom={1}
+                  variants={fadeInAnimation}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-5 py-2 text-lg rounded-3xl cursor-pointer transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-none whitespace-nowrap ${
+                    activeCategory === category
+                      ? 'bg-rwa'
+                      : 'bg-rwa/20 hover:bg-rwa/50'
+                  }`}
+                >
+                  {category}
+                </motion.button>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Static buttons for larger screens */}
+          <div className='hidden md:flex flex-wrap items-center justify-center gap-4'>
+            {categories.map((category) => (
+              <motion.button
+                key={category}
+                custom={1}
+                variants={fadeInAnimation}
+                onClick={() => setActiveCategory(category)}
+                className={`px-5 py-2 text-lg rounded-3xl cursor-pointer transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-none ${
+                  activeCategory === category
+                    ? 'bg-rwa'
+                    : 'bg-rwa/20 hover:bg-rwa/50'
+                }`}
+              >
+                {category}
+              </motion.button>
+            ))}
+          </div>
         </motion.div>
 
         <motion.h1

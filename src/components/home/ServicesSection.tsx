@@ -5,6 +5,7 @@ import { FaAngleDown } from 'react-icons/fa'
 import { IoFilter } from 'react-icons/io5'
 import ServiceCard, { Service } from '../ui/ServiceCard'
 import servicesData from '../../data/services'
+import Link from 'next/link' // Importar el componente Link de Next.js
 
 type FilterType = 'popular' | 'recent' | 'price'
 
@@ -19,7 +20,7 @@ const sectionVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.3, // Reducido para aumentar la velocidad
       ease: 'easeInOut',
     },
   },
@@ -54,7 +55,7 @@ const ServicesSection: React.FC = () => {
       className='py-6 px-2 sm:px-8 lg:px-10 w-full overflow-hidden'
       initial='hidden'
       whileInView='visible'
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: true, amount: 0.01 }} // Ajustado para que aparezca con mínima visibilidad
       variants={sectionVariants}
     >
       <div className='max-w-[90rem] mx-auto'>
@@ -87,12 +88,12 @@ const ServicesSection: React.FC = () => {
         </div>
 
         <div className='text-center mt-16'>
-          <button
-            type='button'
-            className='bg-rwa text-white font-bold px-16 py-3 rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-rwa/20'
+          <Link
+            href='/discover'
+            className='bg-rwa text-white font-bold px-16 py-3 rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-lg shadow-rwa/20 hover:bg-rwa/70'
           >
             All Services
-          </button>
+          </Link>
         </div>
       </div>
     </motion.section>
