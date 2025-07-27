@@ -50,7 +50,7 @@ export default function LoginForm({
 
   return (
     <motion.div
-      className={`w-full md:w-auto p-12 py-6 flex flex-col justify-center items-center gap-8 rounded-xl min-w-2/5 ${
+      className={`w-full md:w-auto p-4 sm:p-8 md:p-12 py-4 sm:py-6 flex flex-col justify-center items-center gap-6 sm:gap-8 rounded-xl min-w-0 md:min-w-2/5 ${
         showApplyNotice ? '' : 'border border-[#E0E0E0]'
       }`}
       initial='hidden'
@@ -58,10 +58,14 @@ export default function LoginForm({
       variants={slideIn('left')}
     >
       <div className='flex justify-center md:justify-start'>
-        <img src='/rwamainlogo.svg' alt='RWA Logo' className='h-12 w-auto' />
+        <img
+          src='/rwamainlogo.svg'
+          alt='RWA Logo'
+          className='h-10 sm:h-12 w-auto'
+        />
       </div>
 
-      <h2 className='text-xl md:text-2xl font-semibold text-rwa text-center md:text-left'>
+      <h2 className='text-lg sm:text-xl md:text-2xl font-semibold text-rwa text-center md:text-left'>
         Log in your user account
       </h2>
 
@@ -81,11 +85,11 @@ export default function LoginForm({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className='w-full pr-12 pl-4 py-2 border border-gray-100 bg-[#F6FAFF] rounded-xl focus:outline-none focus:ring-2 focus:ring-rwa focus:border-transparent'
+              className='w-full pr-12 pl-4 py-2 sm:py-3 border border-gray-100 bg-[#F6FAFF] rounded-xl focus:outline-none focus:ring-2 focus:ring-rwa focus:border-transparent text-sm sm:text-base'
             />
             <span className='absolute inset-y-0 right-0 flex items-center'>
-              <span className='h-full flex items-center bg-rwa p-3.5 rounded-xl'>
-                <FiMail className='text-white' />
+              <span className='h-full flex items-center bg-rwa p-2.5 sm:p-3.5 rounded-xl'>
+                <FiMail className='text-white text-sm sm:text-base' />
               </span>
             </span>
           </div>
@@ -106,22 +110,24 @@ export default function LoginForm({
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className='w-full pr-12 pl-4 py-2 border border-gray-100 bg-[#F6FAFF] rounded-xl focus:outline-none focus:ring-2 focus:ring-rwa focus:border-transparent'
+              className='w-full pr-12 pl-4 py-2 sm:py-3 border border-gray-100 bg-[#F6FAFF] rounded-xl focus:outline-none focus:ring-2 focus:ring-rwa focus:border-transparent text-sm sm:text-base'
             />
             <span className='absolute inset-y-0 right-0 flex items-center'>
-              <span className='h-full flex items-center bg-rwa p-3.5 rounded-xl'>
-                <FiLock className='text-white' />
+              <span className='h-full flex items-center bg-rwa p-2.5 sm:p-3.5 rounded-xl'>
+                <FiLock className='text-white text-sm sm:text-base' />
               </span>
             </span>
           </div>
           <div className='text-right mt-1'>
-            <Link href="#" className='text-sm text-rwa underline'>Forgot Password?</Link>
+            <Link href='#' className='text-sm text-rwa underline'>
+              Forgot Password?
+            </Link>
           </div>
         </div>
 
         <button
           type='submit'
-          className='w-full py-3 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity cursor-pointer shadow-lg'
+          className='w-full py-3 bg-rwa text-white font-semibold rounded hover:opacity-90 transition-opacity cursor-pointer shadow-lg text-sm sm:text-base'
         >
           Login Now
         </button>
@@ -133,8 +139,8 @@ export default function LoginForm({
         </div>
 
         <Link
-          href="#"
-          className='w-full py-3 border-2 border-rwa text-rwa font-semibold rounded text-center hover:bg-rwa hover:text-white transition-colors cursor-pointer'
+          href='#'
+          className='w-full py-3 border-2 border-rwa text-rwa font-semibold rounded text-center hover:bg-rwa hover:text-white transition-colors cursor-pointer text-sm sm:text-base'
         >
           Signup Now
         </Link>

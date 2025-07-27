@@ -21,7 +21,7 @@ export default function AuthBox({ children, footerText = '' }: AuthBoxProps) {
       variants={fadeIn}
       initial='hidden'
       animate='visible'
-      className='bg-white/70 backdrop-blur-md rounded-xl shadow-lg p-8 w-full max-w-md space-y-4'
+      className='bg-white/70 backdrop-blur-md rounded-xl shadow-lg p-4 sm:p-6 md:p-8 w-full max-w-md mx-auto space-y-4'
     >
       {children}
       {footerText && (
