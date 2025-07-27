@@ -12,6 +12,7 @@ export interface Service {
 interface MediaItem {
   type: 'image' | 'video'
   src: string
+  thumbnail?: string
 }
 
 interface PartnerStats {
@@ -94,7 +95,15 @@ const partners: Omit<Partner, 'stats'>[] = [
     introduction:
       'CryptoDevs is a leading blockchain development firm specializing in smart-contract engineering and infrastructure. For more than eight years we have helped startups and enterprises launch secure, scalable dApps on EVM networks, optimizing gas fees and reinforcing auditability. Our team of full-stack engineers, cryptographers and security specialists blends agile development with exhaustive audits to guarantee maximum reliability for every project.',
     logo: '/rwamainlogo.svg',
-    media: [{ type: 'image', src: '/container.webp' }],
+    media: [
+      { type: 'image', src: '/container.webp' },
+      {
+        type: 'video',
+        src: 'https://www.w3schools.com/html/mov_bbb.mp4',
+        thumbnail:
+          'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217',
+      },
+    ],
     website: 'https://cryptodevs.io',
   },
   {

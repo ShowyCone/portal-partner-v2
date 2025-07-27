@@ -12,8 +12,9 @@ interface LogoSliderRowProps {
 }
 
 function LogoSliderRow({ reverse = false }: LogoSliderRowProps) {
-  const visibleLogos = Array.from({ length: 4 }).map(() => '/logoipsum.svg')
-  const logos = [...visibleLogos, ...visibleLogos]
+  const visibleLogos = Array.from({ length: 6 }).map(() => '/logoipsum.svg')
+  // Triplicamos los logos para asegurar un scroll infinito suave
+  const logos = [...visibleLogos, ...visibleLogos, ...visibleLogos]
 
   return (
     <div className='relative w-full overflow-hidden px-8'>
@@ -22,14 +23,19 @@ function LogoSliderRow({ reverse = false }: LogoSliderRowProps) {
 
       <motion.div
         className='flex gap-8'
-        animate={{ x: reverse ? ['0%', '100%'] : ['0%', '-100%'] }}
+        animate={{
+          x: reverse ? ['-50%', '0%'] : ['0%', '-50%'],
+        }}
         transition={{
           x: {
             repeat: Infinity,
             repeatType: 'loop',
-            duration: 25,
+            duration: 30,
             ease: 'linear',
           },
+        }}
+        style={{
+          width: 'max-content',
         }}
       >
         {logos.map((src, i) => (
@@ -38,6 +44,7 @@ function LogoSliderRow({ reverse = false }: LogoSliderRowProps) {
             src={src}
             alt='partner logo'
             className='shrink-0 h-12 opacity-95 bg-white border-2 border-gray-300 rounded-lg p-2'
+            style={{ minWidth: '48px' }}
           />
         ))}
       </motion.div>

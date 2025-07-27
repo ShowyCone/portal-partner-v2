@@ -1,10 +1,10 @@
-import { useState, FormEvent } from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { FiMail, FiLock } from 'react-icons/fi';
+import { useState, FormEvent } from 'react'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { FiMail, FiLock } from 'react-icons/fi'
 
 interface ProviderLoginFormProps {
-  onSuccess?: () => void;
+  onSuccess?: () => void
 }
 
 const slideIn = (direction: 'left' | 'right' = 'left') => ({
@@ -14,24 +14,26 @@ const slideIn = (direction: 'left' | 'right' = 'left') => ({
     x: 0,
     transition: { duration: 0.6, ease: 'easeOut' },
   },
-});
+})
 
-export default function ProviderLoginForm({ onSuccess = () => {} }: ProviderLoginFormProps) {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+export default function ProviderLoginForm({
+  onSuccess = () => {},
+}: ProviderLoginFormProps) {
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
   const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (typeof window !== 'undefined') {
-      localStorage.setItem('isAuthenticated', 'true');
-      window.dispatchEvent(new Event('login'));
+      localStorage.setItem('isAuthenticated', 'true')
+      window.dispatchEvent(new Event('login'))
     }
-    onSuccess();
-  };
+    onSuccess()
+  }
 
   return (
     <motion.div
-      className='w-full md:w-auto p-12 py-8 flex flex-col justify-center items-center gap-8 rounded-xl bg-gray-900 min-w-2/5'
+      className='w-full md:w-auto p-12 py-8 flex flex-col justify-center items-center gap-8 rounded-xl bg-gray-900'
       initial='hidden'
       animate='visible'
       variants={slideIn('left')}
@@ -94,7 +96,10 @@ export default function ProviderLoginForm({ onSuccess = () => {} }: ProviderLogi
             </span>
           </div>
           <div className='text-right'>
-            <Link href="/forgot-password" className='text-sm text-white underline'>
+            <Link
+              href='/forgot-password'
+              className='text-sm text-white underline'
+            >
               Forgot Password?
             </Link>
           </div>
@@ -109,7 +114,7 @@ export default function ProviderLoginForm({ onSuccess = () => {} }: ProviderLogi
 
         <p className='text-center text-sm text-gray-400'>
           You wanna be a partner and list your services?{' '}
-          <Link href='/apply' className='text-rwa underline'>
+          <Link href='apply' className='text-rwa underline'>
             Apply now
           </Link>
         </p>
@@ -122,5 +127,5 @@ export default function ProviderLoginForm({ onSuccess = () => {} }: ProviderLogi
         </p>
       </form>
     </motion.div>
-  );
+  )
 }

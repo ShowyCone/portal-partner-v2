@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa'
+import { FaFacebookF, FaInstagram, FaTwitter, FaEnvelope } from 'react-icons/fa'
 
 const ContactUs: React.FC = () => {
   const socialIcons = [FaFacebookF, FaInstagram, FaTwitter]
@@ -51,17 +51,15 @@ const ContactUs: React.FC = () => {
 
           {/* Form container with glassmorphism */}
           <div className='w-full shadow-xl rounded-3xl flex flex-col md:flex-row overflow-hidden p-2 border border-white/50 backdrop-blur-sm bg-white/20'>
-            <div className='text-white w-full md:w-1/2 p-8 flex items-center justify-center relative rounded-2xl'>
-              <div className='relative z-10 flex justify-between items-start'>
-                <h3 className='text-lg font-semibold mb-4'>
-                  Contact Information
-                </h3>
-                <img
-                  src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Pyramid_of_Khafre_and_Great_Sphinx_of_Giza.jpg/480px-Pyramid_of_Khafre_and_Great_Sphinx_of_Giza.jpg'
-                  alt='pyramid'
-                  className='w-full max-w-xs mx-auto absolute bottom-0 right-0 opacity-70'
-                />
-              </div>
+            <div className='text-white w-full md:w-1/2 p-8 flex flex-col items-start justify-between relative rounded-2xl bg-rwa/40'>
+              <h3 className='z-30 text-3xl font-bold'>Contact Information</h3>
+              <p className='z-30 text-white font-semibold text-2xl flex items-center gap-2'>
+                <FaEnvelope /> support@solutions.rwa.inc
+              </p>
+              <img
+                src='/decorationbanner.webp'
+                className='h-full w-full mx-auto absolute bottom-0 right-0 opacity-40 rounded-br-2xl'
+              />
             </div>
 
             <div className='w-full md:w-1/2 p-8'>

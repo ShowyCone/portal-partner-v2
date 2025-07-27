@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion, Variants } from 'framer-motion'
 import ProviderLoginForm from '../forms/ProviderLoginForm'
+import Image from 'next/image'
 
 const slideIn = (direction: 'left' | 'right' = 'right'): Variants => ({
   hidden: { opacity: 0, x: direction === 'left' ? -50 : 50 },
@@ -29,7 +30,16 @@ const ProviderLogin: React.FC = () => (
         <span className='text-rwa'>RWA Partner Platform</span>
       </h3>
 
-      <div className='h-72 w-full bg-gray-300 rounded-lg' />
+      <div className='h-full bg-gray-300 rounded-lg flex items-center justify-center overflow-hidden'>
+        <Image
+          src='/rwainc.webp'
+          alt='RWA Inc Logo'
+          width={400}
+          height={288}
+          style={{ objectFit: 'contain' }}
+          priority={false}
+        />
+      </div>
 
       <p className='text-gray-600 text-lg text-center'>
         Log in to start managing{' '}
