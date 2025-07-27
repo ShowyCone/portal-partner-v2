@@ -28,14 +28,23 @@ const AllServices: React.FC = () => {
   const [sortBy, setSortBy] = useState<string>('Popular')
   const [category, setCategory] = useState<string>('All')
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const [itemsPerPage, setItemsPerPage] = useState<number>(getItemsPerPage())
+  const [itemsPerPage, setItemsPerPage] = useState<number>(16) // Always start with server value
+  const [isClient, setIsClient] = useState<boolean>(false)
 
-  // Update items per page on resize
+  // Handle client-side hydration
   useEffect(() => {
+    setIsClient(true)
+    setItemsPerPage(getItemsPerPage())
+  }, [])
+
+  // Update items per page on resize (only after hydration)
+  useEffect(() => {
+    if (!isClient) return
+
     const handleResize = () => setItemsPerPage(getItemsPerPage())
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  }, [isClient])
 
   // Duplicate the base list to simulate pagination, while keeping the original UUID id. We add a separate cloneIdx to guarantee unique React keys.
   const extendedServices = useMemo(() => {
@@ -94,6 +103,17 @@ const AllServices: React.FC = () => {
   useEffect(() => {
     setCurrentPage(1)
   }, [sortBy, category, itemsPerPage])
+
+  // Prevent hydration mismatch by showing a loading state until client-side hydration is complete
+  if (!isClient) {
+    return (
+      <section className='pb-5 px-4 md:px-10 max-w-screen-xl mx-auto overflow-hidden'>
+        <div className='flex justify-center items-center py-20'>
+          <div className='animate-pulse text-gray-500'>Loading services...</div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className='pb-5 px-4 md:px-10 max-w-screen-xl mx-auto overflow-hidden'>
@@ -169,42 +189,74 @@ const AllServices: React.FC = () => {
       </motion.div>
 
       {/* Pagination */}
-      <div className='flex justify-center items-center mt-12 gap-3'>
+      <div className='flex justify-center items-center mt-12 gap-2 sm:gap-3 flex-wrap'>
         {/* Previous page */}
-        <div
+        <button
           onClick={() => currentPage > 1 && setCurrentPage((prev) => prev - 1)}
-          className='rounded-full border border-gray-400 text-gray-800 p-2 cursor-pointer hover:border-rwa hover:text-rwa transition-colors'
+          disabled={currentPage === 1}
+          className='rounded-full border border-gray-400 text-gray-800 p-2 cursor-pointer hover:border-rwa hover:text-rwa transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+          aria-label='Previous page'
         >
           <FaChevronLeft />
+        </button>
+
+        {/* Page numbers with better mobile support */}
+        <div className='flex items-center gap-1 sm:gap-2 max-w-xs overflow-x-auto'>
+          {Array.from({ length: totalPages }).map((_, idx) => {
+            const page = idx + 1
+            // Show only a few pages on mobile to prevent overflow
+            const showPage =
+              totalPages <= 7 ||
+              page === 1 ||
+              page === totalPages ||
+              (page >= currentPage - 1 && page <= currentPage + 1)
+
+            if (
+              !showPage &&
+              page !== currentPage - 2 &&
+              page !== currentPage + 2
+            ) {
+              return null
+            }
+
+            if (
+              (page === currentPage - 2 || page === currentPage + 2) &&
+              totalPages > 7
+            ) {
+              return (
+                <span key={page} className='text-gray-400 px-1'>
+                  ...
+                </span>
+              )
+            }
+
+            return (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`min-w-[32px] h-8 text-sm rounded ${
+                  page === currentPage
+                    ? 'text-rwa bg-rwa/10 border border-rwa font-semibold'
+                    : 'text-gray-800 hover:text-rwa hover:bg-gray-100 transition'
+                }`}
+              >
+                {page}
+              </button>
+            )
+          })}
         </div>
 
-        {/* Page numbers */}
-        {Array.from({ length: totalPages }).map((_, idx) => {
-          const page = idx + 1
-          return (
-            <button
-              key={page}
-              onClick={() => setCurrentPage(page)}
-              className={
-                page === currentPage
-                  ? 'text-rwa underline underline-offset-4 font-semibold'
-                  : 'text-gray-800 hover:text-rwa transition'
-              }
-            >
-              {page}
-            </button>
-          )
-        })}
-
         {/* Next page */}
-        <div
+        <button
           onClick={() =>
             currentPage < totalPages && setCurrentPage((prev) => prev + 1)
           }
-          className='rounded-full border border-gray-400 text-gray-800 p-2 cursor-pointer hover:border-rwa hover:text-rwa transition-colors'
+          disabled={currentPage === totalPages}
+          className='rounded-full border border-gray-400 text-gray-800 p-2 cursor-pointer hover:border-rwa hover:text-rwa transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+          aria-label='Next page'
         >
           <FaChevronRight />
-        </div>
+        </button>
       </div>
     </section>
   )
