@@ -139,7 +139,7 @@ export default function LoginForm({
         </div>
 
         <Link
-          href='#'
+          href='/signup'
           className='w-full py-3 border-2 border-rwa text-rwa font-semibold rounded text-center hover:bg-rwa hover:text-white transition-colors cursor-pointer text-sm sm:text-base'
         >
           Signup Now
@@ -152,7 +152,7 @@ export default function LoginForm({
         ) : (
           <p className='text-center text-sm text-gray-600'>
             Are you a partner?{' '}
-            <Link href='/apply' className='text-rwa underline'>
+            <Link href='provider/apply' className='text-rwa underline'>
               Login as provider.
             </Link>
           </p>

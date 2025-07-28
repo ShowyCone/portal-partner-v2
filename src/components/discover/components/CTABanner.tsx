@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 const CTABanner: React.FC = () => {
   return (
@@ -15,12 +16,12 @@ const CTABanner: React.FC = () => {
           Help us to improve
         </h2>
 
-        <a
-          href='/contact'
+        <Link
+          href='/contactus'
           className='bg-white text-rwa px-16 py-2 rounded-md font-medium hover:bg-white/90 transition'
         >
           Contact Us
-        </a>
+        </Link>
       </motion.div>
     </section>
   )
