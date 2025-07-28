@@ -178,7 +178,7 @@ export default function ScheduleMeeting() {
               the profile that best aligns with your topic or interest.
             </p>
 
-            <div className='grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
+            <div className='grid gap-3 sm:gap-4 grid-cols-3'>
               {executives.map((ex) => (
                 <ExecCard
                   key={ex.id}
@@ -299,7 +299,7 @@ function ExecCard({ exec, active, onClick }: ExecCardProps) {
     <button
       type='button'
       onClick={onClick}
-      className={`flex flex-col items-center gap-2 rounded-lg border p-3 sm:p-4 transition ${
+      className={`flex flex-col justify-between items-center gap-2 rounded-lg border p-3 sm:p-4 transition ${
         active ? 'border-rwa bg-rwa/10' : 'border-gray-200 hover:border-rwa'
       }`}
     >
@@ -317,7 +317,7 @@ function ExecCard({ exec, active, onClick }: ExecCardProps) {
       <span className='text-sm sm:text-base md:text-lg font-semibold text-center'>
         {exec.name}
       </span>
-      <span className='rounded-lg bg-rwa px-2 py-0.5 text-white w-full text-xs sm:text-sm text-center'>
+      <span className='rounded-lg bg-rwa px-2 py-0.5 text-white w-full text-xs sm:text-sm text-center h-auto min-h-[2rem] flex items-center justify-center'>
         {exec.role}
       </span>
     </button>
