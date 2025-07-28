@@ -10,10 +10,12 @@ const ContactUs: React.FC = () => {
     <>
       <div className='w-full max-w-5xl py-6 sm:py-8 lg:py-12 px-4 flex flex-col md:flex-row items-center justify-between mx-auto gap-6 md:gap-0'>
         <div className='text-center md:text-left'>
-          <span className='text-base sm:text-lg font-medium text-rwa'>Get Started</span>
+          <span className='text-base sm:text-lg font-medium text-rwa'>
+            Get Started
+          </span>
           <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 leading-tight'>
             Get in touch with us.
-            <br className="hidden sm:block" />
+            <br className='hidden sm:block' />
             We're here to <span className='text-rwa'>assist you</span>.
           </h1>
         </div>
@@ -43,7 +45,9 @@ const ContactUs: React.FC = () => {
 
         <div className='max-w-5xl flex flex-col items-center gap-6 sm:gap-8 flex-1 relative z-10'>
           <div className='w-full'>
-            <h2 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold'>Contact Us</h2>
+            <h2 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold'>
+              Contact Us
+            </h2>
             <p className='text-sm sm:text-base text-gray-600 mt-2'>
               Any question or remarks? Just write us a message!
             </p>
@@ -52,10 +56,14 @@ const ContactUs: React.FC = () => {
           {/* Form container with glassmorphism */}
           <div className='w-full shadow-xl rounded-3xl flex flex-col lg:flex-row overflow-hidden p-2 border border-white/50 backdrop-blur-sm bg-white/20'>
             <div className='text-white w-full lg:w-1/2 p-6 sm:p-8 flex flex-col items-start justify-between relative rounded-2xl bg-rwa/40 min-h-[200px] sm:min-h-[300px]'>
-              <h3 className='z-30 text-xl sm:text-2xl lg:text-3xl font-bold'>Contact Information</h3>
+              <h3 className='z-30 text-xl sm:text-2xl lg:text-3xl font-bold'>
+                Contact Information
+              </h3>
               <p className='z-30 text-white font-semibold text-base sm:text-lg lg:text-2xl flex items-center gap-2'>
-                <FaEnvelope className="text-sm sm:text-base lg:text-xl" /> 
-                <span className="text-xs sm:text-sm lg:text-base">support@solutions.rwa.inc</span>
+                <FaEnvelope className='text-sm sm:text-base lg:text-xl' />
+                <span className='text-xs sm:text-sm lg:text-base'>
+                  support@solutions.rwa.inc
+                </span>
               </p>
               <img
                 src='/decorationbanner.webp'
@@ -130,7 +138,9 @@ const ContactUs: React.FC = () => {
                           name='subject'
                           className='accent-rwa/60 focus:ring-rwa/60'
                         />
-                        <span className='text-xs sm:text-sm text-gray-900'>{option}</span>
+                        <span className='text-xs sm:text-sm text-gray-900'>
+                          {option}
+                        </span>
                       </label>
                     ))}
                   </div>
@@ -162,20 +172,29 @@ const ContactUs: React.FC = () => {
       <div className='bg-white py-8 sm:py-12 border-t border-gray-200'>
         <div className='max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 text-left text-gray-700 text-sm'>
           <div>
-            <p className='text-rwa font-medium mb-2 text-sm sm:text-base'>Contact Info</p>
+            <p className='text-rwa font-medium mb-2 text-sm sm:text-base'>
+              Contact Info
+            </p>
             <h3 className='text-xl sm:text-2xl font-bold'>
-              We are always happy{' '}
-              <br className="hidden sm:block" />
+              We are always happy <br className='hidden sm:block' />
               to <span className='text-rwa'>assist you</span>
             </h3>
           </div>
           <div>
-            <p className='font-semibold mb-1 text-sm sm:text-base'>Email Address</p>
-            <p className='text-rwa text-xs sm:text-sm'>support@solutions.rwa.inc</p>
+            <p className='font-semibold mb-1 text-sm sm:text-base'>
+              Email Address
+            </p>
+            <p className='text-rwa text-xs sm:text-sm'>
+              support@solutions.rwa.inc
+            </p>
           </div>
           <div>
-            <p className='font-semibold mb-1 text-sm sm:text-base'>Assistance hours:</p>
-            <p className='text-xs sm:text-sm'>Monday - Friday 6 am to 8 pm EST</p>
+            <p className='font-semibold mb-1 text-sm sm:text-base'>
+              Assistance hours:
+            </p>
+            <p className='text-xs sm:text-sm'>
+              Monday - Friday 6 am to 8 pm EST
+            </p>
           </div>
         </div>
       </div>

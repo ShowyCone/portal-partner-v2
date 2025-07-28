@@ -195,7 +195,9 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
             alt={name}
             className='h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 object-contain'
           />
-          <h1 className='text-lg sm:text-xl md:text-2xl font-semibold'>{name}</h1>
+          <h1 className='text-lg sm:text-xl md:text-2xl font-semibold'>
+            {name}
+          </h1>
         </div>
         <div className='flex gap-2 sm:gap-3'>
           <button className='border border-rwa text-rwa rounded-xl p-2 hover:bg-gray-50 transition-all hover:scale-105'>
@@ -420,7 +422,11 @@ const PartnerProfile: React.FC<{ partner?: PartnerProfileProps }> = ({
       </motion.div>
 
       {/* Introduction Section */}
-      <motion.div variants={fadeInUp} custom={5} className='mt-8 sm:mt-10 md:mt-12'>
+      <motion.div
+        variants={fadeInUp}
+        custom={5}
+        className='mt-8 sm:mt-10 md:mt-12'
+      >
         <h2 className='text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900'>
           {name} <span className='text-rwa'>Introduction</span>
         </h2>

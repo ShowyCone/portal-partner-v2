@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   FaHome,
   FaShoppingCart,
@@ -14,63 +15,63 @@ import {
   FaCcVisa,
   FaCcMastercard,
   FaSearch,
-} from 'react-icons/fa';
+} from 'react-icons/fa'
 
-import servicesData from '@/data/services';
-import partnersData from '@/data/partners';
-import ServiceCard from '@/components/ui/ServiceCard';
+import servicesData from '@/data/services'
+import partnersData from '@/data/partners'
+import ServiceCard from '@/components/ui/ServiceCard'
 
 interface Props {
-  id: string;
+  id: string
 }
 
 const SearchBar = () => (
-  <div className="relative w-full md:w-2/5">
+  <div className='relative w-full md:w-2/5'>
     <input
-      type="text"
-      placeholder="Search services, categories or partners..."
-      className="w-full rounded-full bg-[#F3F3F4] py-2 sm:py-3 pl-4 sm:pl-5 pr-12 text-sm sm:text-base text-gray-800 placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-rwa/50"
+      type='text'
+      placeholder='Search services, categories or partners...'
+      className='w-full rounded-full bg-[#F3F3F4] py-2 sm:py-3 pl-4 sm:pl-5 pr-12 text-sm sm:text-base text-gray-800 placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-rwa/50'
     />
     <button
-      className="absolute inset-y-0 right-2 sm:right-4 top-1/2 -translate-y-1/2 flex items-center p-1.5 sm:p-2 rounded-full bg-rwa w-6 h-6 sm:w-8 sm:h-8 justify-center cursor-pointer hover:bg-rwa/80 z-10"
-      type="button"
+      className='absolute inset-y-0 right-2 sm:right-4 top-1/2 -translate-y-1/2 flex items-center p-1.5 sm:p-2 rounded-full bg-rwa w-6 h-6 sm:w-8 sm:h-8 justify-center cursor-pointer hover:bg-rwa/80 z-10'
+      type='button'
       tabIndex={-1}
-      aria-label="search"
+      aria-label='search'
     >
-      <FaSearch className="text-white text-xs sm:text-sm" />
+      <FaSearch className='text-white text-xs sm:text-sm' />
     </button>
   </div>
-);
+)
 
 const SingleService: React.FC<Props> = ({ id: serviceId }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   // Detect numeric legacy IDs and map them to current UUID records
-  const isLegacyNumeric = /^\d+$/.test(serviceId);
+  const isLegacyNumeric = /^\d+$/.test(serviceId)
 
   // Helper to find service
   const getService = () => {
     if (isLegacyNumeric) {
-      const idx = parseInt(serviceId, 10) - 1;
-      return servicesData[idx];
+      const idx = parseInt(serviceId, 10) - 1
+      return servicesData[idx]
     }
-    return servicesData.find((s) => s.id === serviceId);
-  };
+    return servicesData.find((s) => s.id === serviceId)
+  }
 
-  const service = getService() || servicesData[0];
+  const service = getService() || servicesData[0]
 
   // If legacy numeric ID, redirect once to the canonical UUID URL
   if (isLegacyNumeric && service && service.id !== serviceId) {
-    router.replace(`/service/${service.id}`);
+    router.replace(`/service/${service.id}`)
   }
 
   const providerServices = servicesData.filter(
-    (s) => s.partnerId === service.partnerId && s.id !== service.id,
-  );
+    (s) => s.partnerId === service.partnerId && s.id !== service.id
+  )
   const otherServices = servicesData
     .filter((s) => s.partnerId !== service.partnerId)
     .sort(() => 0.5 - Math.random())
-    .slice(0, 2);
+    .slice(0, 2)
 
   const faqs = [
     {
@@ -85,104 +86,286 @@ const SingleService: React.FC<Props> = ({ id: serviceId }) => {
       q: 'Is there a money-back guarantee?',
       a: 'Absolutely. If you are not satisfied with the final deliverables, you have 7 days to request a full refund—no questions asked.',
     },
-  ];
+  ]
 
   const defaultIncludes = [
     'Dedicated project manager',
     'Weekly progress reports',
     'Post-delivery support (30 days)',
-  ];
+  ]
 
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [selectedPlan, setSelectedPlan] = useState<'Basic' | 'Standard' | 'Pro'>('Standard');
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [selectedPlan, setSelectedPlan] = useState<
+    'Basic' | 'Standard' | 'Pro'
+  >('Standard')
+  // Para evitar error de hidratación con imágenes
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleFaqToggle = (idx: number) => {
-    setOpenFaq(openFaq === idx ? null : idx);
-  };
+    setOpenFaq(openFaq === idx ? null : idx)
+  }
 
-  const partner = partnersData.find((p) => p.id === service.partnerId);
-  const partnerName = partner ? partner.name : 'Unknown Partner';
+  const partner = partnersData.find((p) => p.id === service.partnerId)
+  const partnerName = partner ? partner.name : 'Unknown Partner'
 
   return (
-    <section className="container mx-auto px-4 py-8 sm:py-12">
-      <div className="flex justify-center md:justify-start">
+    <section className='container mx-auto px-4 py-8 sm:py-12'>
+      <div className='flex justify-center md:justify-start'>
         <SearchBar />
       </div>
 
-      <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
-        <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-500">
-          <FaHome className="text-xs sm:text-sm" />
+      <div className='mt-6 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0'>
+        <div className='flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-500'>
+          <FaHome className='text-xs sm:text-sm' />
           <span>/</span>
           <span>{service.tag}</span>
           <span>/</span>
-          <Link href={`/partner/${partner?.id}`} className="text-rwa hover:underline truncate">
+          <Link
+            href={`/partner/${partner?.id}`}
+            className='text-rwa hover:underline truncate'
+          >
             {partnerName}
           </Link>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3 text-base sm:text-lg text-gray-500">
+        <div className='flex items-center gap-2 sm:gap-3 text-base sm:text-lg text-gray-500'>
           <button
-            aria-label="Add to cart"
-            className="rounded-md px-2 sm:px-3 py-1.5 sm:py-2 transition-colors hover:bg-gray-100 text-rwa border border-gray-300"
+            aria-label='Add to cart'
+            className='rounded-md px-2 sm:px-3 py-1.5 sm:py-2 transition-colors hover:bg-gray-100 text-rwa border border-gray-300'
           >
-            <FaShoppingCart className="text-sm sm:text-base" />
+            <FaShoppingCart className='text-sm sm:text-base' />
           </button>
           <button
-            aria-label="Share"
-            className="rounded-md px-2 sm:px-3 py-1.5 sm:py-2 transition-colors hover:bg-gray-100 border border-gray-300"
+            aria-label='Share'
+            className='rounded-md px-2 sm:px-3 py-1.5 sm:py-2 transition-colors hover:bg-gray-100 border border-gray-300'
           >
-            <FaShare className="text-sm sm:text-base" />
+            <FaShare className='text-sm sm:text-base' />
           </button>
           <button
-            aria-label="More options"
-            className="rounded-md px-2 sm:px-3 py-1.5 sm:py-2 transition-colors hover:bg-gray-100 border border-gray-300"
+            aria-label='More options'
+            className='rounded-md px-2 sm:px-3 py-1.5 sm:py-2 transition-colors hover:bg-gray-100 border border-gray-300'
           >
-            <FaEllipsisH className="text-sm sm:text-base" />
+            <FaEllipsisH className='text-sm sm:text-base' />
           </button>
         </div>
       </div>
 
-      <div className="mt-8 sm:mt-10 grid gap-6 sm:gap-8 lg:gap-10 lg:grid-cols-3">
-        <div className="flex flex-col gap-6 sm:gap-8 lg:gap-10 lg:col-span-2">
-          <h1 className="text-2xl sm:text-3xl font-bold">{service.title}</h1>
+      <div className='mt-8 sm:mt-10 grid gap-6 sm:gap-8 lg:gap-10 lg:grid-cols-3'>
+        <div className='flex flex-col gap-6 sm:gap-8 lg:gap-10 lg:col-span-2'>
+          <h1 className='text-2xl sm:text-3xl font-bold'>{service.title}</h1>
 
-          <Link href={`/partner/${partner?.id}`} className="flex items-center gap-3 sm:gap-4 hover:opacity-90">
-            {service.image ? (
-              <img src={service.image} alt={partnerName} className="h-12 w-12 sm:h-14 sm:w-14 rounded-full object-cover flex-shrink-0" />
+          <Link
+            href={`/partner/${partner?.id}`}
+            className='flex items-center gap-3 sm:gap-4 hover:opacity-90'
+          >
+            {mounted && service.image ? (
+              <Image
+                src={service.image}
+                alt={partnerName || 'Service image'}
+                width={56}
+                height={56}
+                className='h-12 w-12 sm:h-14 sm:w-14 rounded-full object-cover flex-shrink-0'
+                priority
+                unoptimized
+              />
             ) : (
-              <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gray-100 flex-shrink-0">
-                <FaBuilding className="text-xl sm:text-2xl text-gray-400" />
+              <div className='flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-gray-100 flex-shrink-0'>
+                <FaBuilding className='text-xl sm:text-2xl text-gray-400' />
               </div>
             )}
 
             <div>
-              <p className="font-semibold text-sm sm:text-base">{partnerName}</p>
-              <div className="flex items-center gap-1 text-rwa">
+              <p className='font-semibold text-sm sm:text-base'>
+                {partnerName}
+              </p>
+              <div className='flex items-center gap-1 text-rwa'>
                 {Array(5)
                   .fill(0)
                   .map((_, i) => (
-                    <FaStar key={i} className={`text-xs sm:text-sm ${i < Math.round(service.rating) ? 'fill-current' : 'text-gray-300'}`} />
+                    <FaStar
+                      key={i}
+                      className={`text-xs sm:text-sm ${
+                        i < Math.round(service.rating)
+                          ? 'fill-current'
+                          : 'text-gray-300'
+                      }`}
+                    />
                   ))}
-                <span className="ml-1 sm:ml-2 text-xs sm:text-sm text-gray-500">({service.reviews || 0} Reviews)</span>
+                <span className='ml-1 sm:ml-2 text-xs sm:text-sm text-gray-500'>
+                  ({service.reviews || 0} Reviews)
+                </span>
               </div>
             </div>
           </Link>
 
-          <div className="space-y-3">
-            <h2 className="text-lg sm:text-xl font-bold text-rwa">About this service</h2>
-            <p className="text-sm sm:text-base text-gray-700">{service.description}</p>
-            <button className="underline decoration-1 underline-offset-4 text-rwa hover:text-rwa/80 text-sm sm:text-base">Learn More</button>
+          <div className='space-y-3'>
+            <h2 className='text-lg sm:text-xl font-bold text-rwa'>
+              About this service
+            </h2>
+            <p className='text-sm sm:text-base text-gray-700'>
+              {service.description}
+            </p>
+            <button className='underline decoration-1 underline-offset-4 text-rwa hover:text-rwa/80 text-sm sm:text-base'>
+              Learn More
+            </button>
           </div>
 
-          <div className="space-y-3">
-            <h2 className="text-lg sm:text-xl font-bold text-rwa">FAQ</h2>
-            <div className="divide-y divide-gray-200">
+          {/* Sección de pagos SOLO en mobile (antes del FAQ) */}
+          <div className='block lg:hidden'>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className='my-6 space-y-6 rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm'
+            >
+              <div className='flex rounded-full bg-rwa/10 p-1'>
+                {(['Basic', 'Standard', 'Pro'] as const).map((plan) => (
+                  <button
+                    key={plan}
+                    onClick={() => setSelectedPlan(plan)}
+                    className={`flex-1 rounded-full py-2 text-xs sm:text-sm transition-colors ${
+                      selectedPlan === plan
+                        ? 'bg-white text-gray-800 shadow'
+                        : 'text-gray-600'
+                    }`}
+                  >
+                    {plan}
+                  </button>
+                ))}
+              </div>
+
+              <Link
+                href={`/partner/${partner?.id}`}
+                className='flex gap-3 sm:gap-4 hover:opacity-90'
+              >
+                {mounted && service.image ? (
+                  <Image
+                    src={service.image}
+                    alt={partnerName || 'Service image'}
+                    width={80}
+                    height={80}
+                    className='h-16 w-16 sm:h-20 sm:w-20 rounded-md object-cover flex-shrink-0'
+                    priority
+                    unoptimized
+                  />
+                ) : (
+                  <div className='flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-md bg-gray-100 flex-shrink-0'>
+                    <FaBuilding className='text-2xl sm:text-3xl text-gray-400' />
+                  </div>
+                )}
+                <div className='space-y-1 min-w-0'>
+                  <p className='text-sm font-semibold truncate'>
+                    {partnerName}
+                  </p>
+                  <p className='text-sm text-rwa line-clamp-2'>
+                    {service.title}
+                  </p>
+                  <p className='text-lg font-bold'>${service.price}</p>
+                  <div className='flex items-center gap-1 text-sm text-rwa'>
+                    {Array(5)
+                      .fill(0)
+                      .map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className={`text-xs ${
+                            i < Math.round(service.rating)
+                              ? 'fill-current'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    <span className='text-xs sm:text-sm'>
+                      ({service.rating})
+                    </span>
+                  </div>
+                  <span className='inline-block rounded bg-rwa px-2 py-0.5 text-xs text-white'>
+                    {service.tag}
+                  </span>
+                </div>
+              </Link>
+
+              <hr className='my-2 text-gray-200' />
+
+              <div>
+                <h3 className='mb-2 text-sm font-bold text-rwa'>Include:</h3>
+                <ul className='list-inside list-disc space-y-1 text-sm text-gray-700'>
+                  {(service.includes || defaultIncludes).map((inc, idx) => (
+                    <li key={idx} className='text-xs sm:text-sm'>
+                      {inc}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <hr className='my-2 text-gray-200' />
+
+              <p className='flex items-center gap-2 text-xs text-gray-500'>
+                Your payment will be processed through{' '}
+                <FaCcStripe className='text-lg sm:text-2xl' />
+              </p>
+              <hr className='my-2 text-gray-200' />
+
+              <div>
+                <h3 className='mb-2 text-sm font-bold text-rwa'>
+                  Price Details
+                </h3>
+                <div className='flex justify-between text-xs sm:text-sm'>
+                  <span>Service Cost</span>
+                  <span>${service.price}</span>
+                </div>
+                <div className='flex justify-between text-xs sm:text-sm'>
+                  <span>
+                    Service Fee{' '}
+                    <span className='text-xs text-gray-400'>(5%)</span>
+                  </span>
+                  <span>
+                    <span className='text-rwa'>
+                      ${(+service.price * 0.05).toFixed(2)}
+                    </span>
+                  </span>
+                </div>
+                <div className='flex justify-between text-xs sm:text-sm'>
+                  <span>Tax</span>
+                  <span className='text-rwa'>
+                    ${(+service.price * 0.1).toFixed(2)}
+                  </span>
+                </div>
+                <hr className='my-2 text-gray-200' />
+                <div className='flex justify-between font-bold text-sm'>
+                  <span>Total (USD)</span>
+                  <span className='text-rwa'>
+                    ${(service.price * 1.15).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              <button className='w-full rounded-full bg-rwa py-2.5 sm:py-3 text-sm sm:text-base text-white transition-colors hover:bg-rwa/90'>
+                Pay Now
+              </button>
+              <div className='flex items-center justify-center gap-3 text-xl sm:text-2xl text-gray-500'>
+                <FaCcVisa />
+                <FaCcMastercard />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* FAQ */}
+          <div className='space-y-3'>
+            <h2 className='text-lg sm:text-xl font-bold text-rwa'>FAQ</h2>
+            <div className='divide-y divide-gray-200'>
               {faqs.map((item, idx) => (
-                <div key={idx} className="py-3">
-                  <button onClick={() => handleFaqToggle(idx)} className="flex w-full items-center justify-between text-left text-sm sm:text-base">
+                <div key={idx} className='py-3'>
+                  <button
+                    onClick={() => handleFaqToggle(idx)}
+                    className='flex w-full items-center justify-between text-left text-sm sm:text-base'
+                  >
                     <span>{item.q}</span>
-                    <motion.span animate={{ rotate: openFaq === idx ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                      <FaChevronDown className="text-sm sm:text-base" />
+                    <motion.span
+                      animate={{ rotate: openFaq === idx ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <FaChevronDown className='text-sm sm:text-base' />
                     </motion.span>
                   </button>
 
@@ -192,7 +375,7 @@ const SingleService: React.FC<Props> = ({ id: serviceId }) => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden pt-2 text-xs sm:text-sm text-gray-600"
+                        className='overflow-hidden pt-2 text-xs sm:text-sm text-gray-600'
                       >
                         {item.a}
                       </motion.p>
@@ -203,26 +386,36 @@ const SingleService: React.FC<Props> = ({ id: serviceId }) => {
             </div>
           </div>
 
-          <div className="space-y-3">
-            <h2 className="text-lg sm:text-xl font-bold text-rwa">Tags</h2>
-            <div className="flex flex-wrap gap-2">
-              {service.tag && <span className="rounded-full bg-gray-100 px-2 sm:px-3 py-1 text-xs sm:text-sm">{service.tag}</span>}
+          <div className='space-y-3'>
+            <h2 className='text-lg sm:text-xl font-bold text-rwa'>Tags</h2>
+            <div className='flex flex-wrap gap-2'>
+              {service.tag && (
+                <span className='rounded-full bg-gray-100 px-2 sm:px-3 py-1 text-xs sm:text-sm'>
+                  {service.tag}
+                </span>
+              )}
             </div>
           </div>
 
-          <div className="space-y-4 sm:space-y-6">
-            <h2 className="text-lg sm:text-xl font-bold text-rwa">More services from {partnerName}</h2>
-            <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <div className='space-y-4 sm:space-y-6'>
+            <h2 className='text-lg sm:text-xl font-bold text-rwa'>
+              More services from {partnerName}
+            </h2>
+            <div className='grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
               {providerServices.map((s) => (
                 <ServiceCard key={s.id} service={s} />
               ))}
             </div>
-            <button className="underline decoration-1 underline-offset-4 text-rwa hover:text-rwa/80 text-sm sm:text-base">View More</button>
+            <button className='underline decoration-1 underline-offset-4 text-rwa hover:text-rwa/80 text-sm sm:text-base'>
+              View More
+            </button>
           </div>
 
-          <div className="space-y-4 sm:space-y-6">
-            <h2 className="text-lg sm:text-xl font-bold text-rwa">More services from other Partners</h2>
-            <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <div className='space-y-4 sm:space-y-6'>
+            <h2 className='text-lg sm:text-xl font-bold text-rwa'>
+              More services from other Partners
+            </h2>
+            <div className='grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
               {otherServices.map((s) => (
                 <ServiceCard key={s.id} service={s} />
               ))}
@@ -230,19 +423,22 @@ const SingleService: React.FC<Props> = ({ id: serviceId }) => {
           </div>
         </div>
 
-        <div className="w-full lg:w-auto lg:min-w-80 xl:min-w-96">
+        {/* Sección de pagos SOLO en desktop (a la derecha) */}
+        <div className='hidden lg:block w-full lg:w-auto lg:min-w-80 xl:min-w-96'>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="sticky top-24 space-y-6 rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm"
+            className='sticky top-24 space-y-6 rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm'
           >
-            <div className="flex rounded-full bg-rwa/10 p-1">
+            <div className='flex rounded-full bg-rwa/10 p-1'>
               {(['Basic', 'Standard', 'Pro'] as const).map((plan) => (
                 <button
                   key={plan}
                   onClick={() => setSelectedPlan(plan)}
                   className={`flex-1 rounded-full py-2 text-xs sm:text-sm transition-colors ${
-                    selectedPlan === plan ? 'bg-white text-gray-800 shadow' : 'text-gray-600'
+                    selectedPlan === plan
+                      ? 'bg-white text-gray-800 shadow'
+                      : 'text-gray-600'
                   }`}
                 >
                   {plan}
@@ -250,68 +446,106 @@ const SingleService: React.FC<Props> = ({ id: serviceId }) => {
               ))}
             </div>
 
-            <Link href={`/partner/${partner?.id}`} className="flex gap-3 sm:gap-4 hover:opacity-90">
-              <img src={service.image} alt={partnerName} className="h-16 w-16 sm:h-20 sm:w-20 rounded-md object-cover flex-shrink-0" />
-              <div className="space-y-1 min-w-0">
-                <p className="text-sm font-semibold truncate">{partnerName}</p>
-                <p className="text-sm text-rwa line-clamp-2">{service.title}</p>
-                <p className="text-lg font-bold">${service.price}</p>
-                <div className="flex items-center gap-1 text-sm text-rwa">
+            <Link
+              href={`/partner/${partner?.id}`}
+              className='flex gap-3 sm:gap-4 hover:opacity-90'
+            >
+              {mounted && service.image ? (
+                <Image
+                  src={service.image}
+                  alt={partnerName || 'Service image'}
+                  width={80}
+                  height={80}
+                  className='h-16 w-16 sm:h-20 sm:w-20 rounded-md object-cover flex-shrink-0'
+                  priority
+                  unoptimized
+                />
+              ) : (
+                <div className='flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-md bg-gray-100 flex-shrink-0'>
+                  <FaBuilding className='text-2xl sm:text-3xl text-gray-400' />
+                </div>
+              )}
+              <div className='space-y-1 min-w-0'>
+                <p className='text-sm font-semibold truncate'>{partnerName}</p>
+                <p className='text-sm text-rwa line-clamp-2'>{service.title}</p>
+                <p className='text-lg font-bold'>${service.price}</p>
+                <div className='flex items-center gap-1 text-sm text-rwa'>
                   {Array(5)
                     .fill(0)
                     .map((_, i) => (
-                      <FaStar key={i} className={`text-xs ${i < Math.round(service.rating) ? 'fill-current' : 'text-gray-300'}`} />
+                      <FaStar
+                        key={i}
+                        className={`text-xs ${
+                          i < Math.round(service.rating)
+                            ? 'fill-current'
+                            : 'text-gray-300'
+                        }`}
+                      />
                     ))}
-                  <span className="text-xs sm:text-sm">({service.rating})</span>
+                  <span className='text-xs sm:text-sm'>({service.rating})</span>
                 </div>
-                <span className="inline-block rounded bg-rwa px-2 py-0.5 text-xs text-white">{service.tag}</span>
+                <span className='inline-block rounded bg-rwa px-2 py-0.5 text-xs text-white'>
+                  {service.tag}
+                </span>
               </div>
             </Link>
 
-            <hr className="my-2 text-gray-200" />
+            <hr className='my-2 text-gray-200' />
 
             <div>
-              <h3 className="mb-2 text-sm font-bold text-rwa">Include:</h3>
-              <ul className="list-inside list-disc space-y-1 text-sm text-gray-700">
+              <h3 className='mb-2 text-sm font-bold text-rwa'>Include:</h3>
+              <ul className='list-inside list-disc space-y-1 text-sm text-gray-700'>
                 {(service.includes || defaultIncludes).map((inc, idx) => (
-                  <li key={idx} className="text-xs sm:text-sm">{inc}</li>
+                  <li key={idx} className='text-xs sm:text-sm'>
+                    {inc}
+                  </li>
                 ))}
               </ul>
             </div>
-            <hr className="my-2 text-gray-200" />
+            <hr className='my-2 text-gray-200' />
 
-            <p className="flex items-center gap-2 text-xs text-gray-500">
-              Your payment will be processed through <FaCcStripe className="text-lg sm:text-2xl" />
+            <p className='flex items-center gap-2 text-xs text-gray-500'>
+              Your payment will be processed through{' '}
+              <FaCcStripe className='text-lg sm:text-2xl' />
             </p>
-            <hr className="my-2 text-gray-200" />
+            <hr className='my-2 text-gray-200' />
 
             <div>
-              <h3 className="mb-2 text-sm font-bold text-rwa">Price Details</h3>
-              <div className="flex justify-between text-xs sm:text-sm">
+              <h3 className='mb-2 text-sm font-bold text-rwa'>Price Details</h3>
+              <div className='flex justify-between text-xs sm:text-sm'>
                 <span>Service Cost</span>
                 <span>${service.price}</span>
               </div>
-              <div className="flex justify-between text-xs sm:text-sm">
+              <div className='flex justify-between text-xs sm:text-sm'>
                 <span>
-                  Service Fee <span className="text-xs text-gray-400">(5%)</span>
+                  Service Fee{' '}
+                  <span className='text-xs text-gray-400'>(5%)</span>
                 </span>
                 <span>
-                  <span className="text-rwa">${(+service.price * 0.05).toFixed(2)}</span>
+                  <span className='text-rwa'>
+                    ${(+service.price * 0.05).toFixed(2)}
+                  </span>
                 </span>
               </div>
-              <div className="flex justify-between text-xs sm:text-sm">
+              <div className='flex justify-between text-xs sm:text-sm'>
                 <span>Tax</span>
-                <span className="text-rwa">${(+service.price * 0.1).toFixed(2)}</span>
+                <span className='text-rwa'>
+                  ${(+service.price * 0.1).toFixed(2)}
+                </span>
               </div>
-              <hr className="my-2 text-gray-200" />
-              <div className="flex justify-between font-bold text-sm">
+              <hr className='my-2 text-gray-200' />
+              <div className='flex justify-between font-bold text-sm'>
                 <span>Total (USD)</span>
-                <span className="text-rwa">${(service.price * 1.15).toFixed(2)}</span>
+                <span className='text-rwa'>
+                  ${(service.price * 1.15).toFixed(2)}
+                </span>
               </div>
             </div>
 
-            <button className="w-full rounded-full bg-rwa py-2.5 sm:py-3 text-sm sm:text-base text-white transition-colors hover:bg-rwa/90">Pay Now</button>
-            <div className="flex items-center justify-center gap-3 text-xl sm:text-2xl text-gray-500">
+            <button className='w-full rounded-full bg-rwa py-2.5 sm:py-3 text-sm sm:text-base text-white transition-colors hover:bg-rwa/90'>
+              Pay Now
+            </button>
+            <div className='flex items-center justify-center gap-3 text-xl sm:text-2xl text-gray-500'>
               <FaCcVisa />
               <FaCcMastercard />
             </div>
@@ -319,7 +553,7 @@ const SingleService: React.FC<Props> = ({ id: serviceId }) => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default SingleService; 
+export default SingleService

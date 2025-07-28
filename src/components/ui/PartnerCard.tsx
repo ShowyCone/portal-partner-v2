@@ -1,21 +1,21 @@
-import { motion } from 'framer-motion';
-import { FaExternalLinkAlt } from 'react-icons/fa';
-import Link from 'next/link';
+import { motion } from 'framer-motion'
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import Link from 'next/link'
 
 interface Partner {
-  id: string;
-  name: string;
-  logo: string;
-  website: string;
-  description: string;
+  id: string
+  name: string
+  logo: string
+  website: string
+  description: string
   stats: {
-    services: number;
-  };
+    services: number
+  }
 }
 
 interface PartnerCardProps {
-  partner: Partner;
-  tags?: string[];
+  partner: Partner
+  tags?: string[]
 }
 
 const PartnerCard: React.FC<PartnerCardProps> = ({ partner, tags = [] }) => {
@@ -45,7 +45,9 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ partner, tags = [] }) => {
       <hr className='border-gray-200' />
 
       {/* Description + call-to-action */}
-      <p className='text-xs sm:text-sm text-gray-700 line-clamp-3'>{partner.description}</p>
+      <p className='text-xs sm:text-sm text-gray-700 line-clamp-3'>
+        {partner.description}
+      </p>
       <div className='flex justify-end'>
         <Link
           href={`/partner/${partner.id}`}
@@ -81,7 +83,7 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ partner, tags = [] }) => {
         </div>
       </div>
     </motion.div>
-  );
-};
+  )
+}
 
-export default PartnerCard;
+export default PartnerCard

@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import partnersData from '@/data/partners'
 import { motion } from 'framer-motion'
-import { FaRegHeart, FaStar } from 'react-icons/fa'
+import { FaRegHeart, FaStar, FaBuilding } from 'react-icons/fa'
+import Image from 'next/image'
 
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.95 },
@@ -72,12 +73,21 @@ const ServiceCard: React.FC<Props> = ({
       onClick={handleCardClick}
     >
       <div className='relative h-40 sm:h-48 rounded-t-lg overflow-hidden'>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={service.image}
-          alt={service.title}
-          className='w-full h-full object-cover'
-        />
+        {service.image ? (
+          <Image
+            src={service.image}
+            alt={service.title || 'Service image'}
+            fill
+            className='object-cover'
+            sizes='(max-width: 640px) 100vw, 33vw'
+            priority
+            unoptimized
+          />
+        ) : (
+          <div className='w-full h-full flex items-center justify-center bg-gray-100'>
+            <FaBuilding className='text-3xl text-gray-300' />
+          </div>
+        )}
         <button
           onClick={(e) => {
             e.preventDefault()
@@ -110,7 +120,9 @@ const ServiceCard: React.FC<Props> = ({
 
           <div className='flex items-center gap-1 flex-shrink-0'>
             <FaStar className='text-rwa text-sm sm:text-lg' />
-            <span className='text-sm sm:text-lg'>{service.rating.toFixed(1)}</span>
+            <span className='text-sm sm:text-lg'>
+              {service.rating.toFixed(1)}
+            </span>
           </div>
         </div>
 
@@ -121,7 +133,9 @@ const ServiceCard: React.FC<Props> = ({
               : 'flex items-center gap-2 mt-2'
           }
         >
-          <p className='font-bold text-gray-900 text-sm sm:text-base'>${service.price}</p>
+          <p className='font-bold text-gray-900 text-sm sm:text-base'>
+            ${service.price}
+          </p>
           <span className='bg-rwa/10 text-rwa text-xs font-semibold px-2 py-0.5 rounded-full'>
             {service.tag}
           </span>
@@ -151,9 +165,11 @@ const ServiceCard: React.FC<Props> = ({
                 {partnerName}
               </button>
             ) : (
-              <span className="truncate">{partnerName}</span>
+              <span className='truncate'>{partnerName}</span>
             )}
-            <span className="whitespace-nowrap">{service.reviews ?? 0} reviews</span>
+            <span className='whitespace-nowrap'>
+              {service.reviews ?? 0} reviews
+            </span>
           </div>
         )}
       </div>

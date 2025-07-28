@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import partnersData from '../../data/partners'
 import PartnerProfile from './PartnerProfile'
 import servicesData from '../../data/services'
-import ServiceSlider from '../../components/ServiceSlider'
+import SwiperServiceSlider from '../../components/SwiperServiceSlider'
 import ReviewsSection from '../../components/ReviewsSection'
 
 interface PartnerProfileProps {
@@ -90,7 +90,7 @@ const PartnerDashboard = ({
       <PartnerProfile partner={partnerProfileData} />
 
       {uniqueTags.map((tag) => (
-        <ServiceSlider
+        <SwiperServiceSlider
           key={tag}
           partnerName={partner.name}
           tag={tag}

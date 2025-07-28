@@ -105,7 +105,9 @@ export default function ScheduleMeeting() {
 
         {step === 0 && (
           <StepWrapper>
-            <h2 className='text-lg sm:text-xl font-semibold'>Request a Meeting</h2>
+            <h2 className='text-lg sm:text-xl font-semibold'>
+              Request a Meeting
+            </h2>
             <p className='text-xs sm:text-sm text-gray-400'>
               We value our partners' insights and are committed to fostering
               collaboration. Request a meeting with our executive team to
@@ -198,7 +200,9 @@ export default function ScheduleMeeting() {
             >
               ✓
             </motion.div>
-            <h2 className='text-lg sm:text-xl font-semibold'>You're Almost Done</h2>
+            <h2 className='text-lg sm:text-xl font-semibold'>
+              You're Almost Done
+            </h2>
             <p className='text-xs sm:text-sm text-gray-400 px-2'>
               Please review all the information you've provided before
               submitting your request. Once submitted, a confirmation email will
@@ -310,7 +314,9 @@ function ExecCard({ exec, active, onClick }: ExecCardProps) {
           <FiUser className='h-8 w-8 sm:h-10 sm:w-10' />
         </div>
       )}
-      <span className='text-sm sm:text-base md:text-lg font-semibold text-center'>{exec.name}</span>
+      <span className='text-sm sm:text-base md:text-lg font-semibold text-center'>
+        {exec.name}
+      </span>
       <span className='rounded-lg bg-rwa px-2 py-0.5 text-white w-full text-xs sm:text-sm text-center'>
         {exec.role}
       </span>

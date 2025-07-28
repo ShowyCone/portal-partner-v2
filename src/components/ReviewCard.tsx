@@ -15,7 +15,9 @@ const ReviewCard = ({ reviewer, serviceName, rating, text }) => (
       <div className='w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0'>
         <FaUser className='text-gray-400 text-xl sm:text-3xl' />
       </div>
-      <span className='mt-0 sm:mt-2 text-sm font-medium text-rwa'>{reviewer}</span>
+      <span className='mt-0 sm:mt-2 text-sm font-medium text-rwa'>
+        {reviewer}
+      </span>
     </div>
     <div className='flex-1 flex flex-col'>
       <FaQuoteLeft className='text-2xl sm:text-3xl text-rwa' />
@@ -30,7 +32,9 @@ const ReviewCard = ({ reviewer, serviceName, rating, text }) => (
           </span>
         </div>
       </div>
-      <p className='mt-2 text-xs sm:text-sm text-gray-600 leading-relaxed'>{text}</p>
+      <p className='mt-2 text-xs sm:text-sm text-gray-600 leading-relaxed'>
+        {text}
+      </p>
     </div>
   </motion.article>
 )
