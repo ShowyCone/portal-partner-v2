@@ -53,9 +53,8 @@ const Hero = () => {
       <div className='absolute inset-0 bg-black/30 z-[-1]'></div>
 
       <div className='container z-10 flex flex-col items-center justify-center w-full max-w-screen-xl gap-6 text-center'>
-        {/* Swiper for mobile */}
         <motion.div
-          className='w-full'
+          className='w-full md:hidden'
           initial='initial'
           animate='animate'
           variants={{
@@ -74,7 +73,7 @@ const Hero = () => {
             speed={4000}
             allowTouchMove={true}
             modules={[Autoplay]}
-            className='flex md:hidden'
+            className='flex'
           >
             {categories.map((category) => (
               <SwiperSlide key={category} className='!w-auto'>
@@ -93,25 +92,31 @@ const Hero = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+        </motion.div>
 
-          {/* Static buttons for larger screens */}
-          <div className='hidden md:flex flex-wrap items-center justify-center gap-4'>
-            {categories.map((category) => (
-              <motion.button
-                key={category}
-                custom={1}
-                variants={fadeInAnimation}
-                onClick={() => setActiveCategory(category)}
-                className={`px-5 py-2 text-lg rounded-3xl cursor-pointer transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-none ${
-                  activeCategory === category
-                    ? 'bg-rwa'
-                    : 'bg-rwa/20 hover:bg-rwa/50'
-                }`}
-              >
-                {category}
-              </motion.button>
-            ))}
-          </div>
+        <motion.div
+          className='hidden md:flex flex-wrap items-center justify-center gap-4 w-full'
+          initial='initial'
+          animate='animate'
+          variants={{
+            animate: { transition: { staggerChildren: 0.05 } },
+          }}
+        >
+          {categories.map((category) => (
+            <motion.button
+              key={category}
+              custom={1}
+              variants={fadeInAnimation}
+              onClick={() => setActiveCategory(category)}
+              className={`px-5 py-2 text-lg rounded-3xl cursor-pointer transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-none ${
+                activeCategory === category
+                  ? 'bg-rwa'
+                  : 'bg-rwa/20 hover:bg-rwa/50'
+              }`}
+            >
+              {category}
+            </motion.button>
+          ))}
         </motion.div>
 
         <motion.h1

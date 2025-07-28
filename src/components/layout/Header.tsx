@@ -30,22 +30,25 @@ const Header: React.FC = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      whileHover={{ scale: 1.01 }}
     >
-      <div className='flex items-center justify-between w-full md:w-auto'>
+      <div className='flex items-center w-full md:w-auto'>
         <Link href='/' passHref>
           <motion.img
             src='/rwamainlogo.svg'
             alt='Logo'
-            className='h-8 object-contain'
+            className='h-8 object-contain mr-6'
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           />
         </Link>
-
+        {/* Navigation for larger screens */}
+        <nav className='hidden md:flex space-x-6'>
+          <NavItem href='/' label='Home' />
+          <NavItem href='/discover' label='Discover' />
+        </nav>
         {/* Mobile menu toggle */}
         <motion.button
-          className='md:hidden text-gray-700 hover:text-rwa focus:outline-none flex flex-col justify-center items-center relative w-8 h-8'
+          className='md:hidden text-gray-700 hover:text-rwa focus:outline-none flex flex-col justify-center items-center relative w-8 h-8 ml-auto'
           onClick={() => setMenuOpen(!menuOpen)}
           whileTap={{ scale: 0.9 }}
         >
@@ -69,12 +72,6 @@ const Header: React.FC = () => {
           />
         </motion.button>
       </div>
-
-      {/* Navigation for larger screens */}
-      <nav className='hidden md:flex items-center space-x-6'>
-        <NavItem href='/' label='Home' />
-        <NavItem href='/discover' label='Discover' />
-      </nav>
 
       {/* Mobile menu */}
       {menuOpen && (
